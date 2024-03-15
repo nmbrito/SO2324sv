@@ -17,6 +17,13 @@
 
 #include <stdio.h>
 
+// Forks and stuff
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#define CHILD 0
+
 void process_work (long niter)
 {
     for (long i=0; i < niter; i++)
