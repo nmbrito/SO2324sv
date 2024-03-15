@@ -1,7 +1,13 @@
+# Remember:
+# $^ -> All parameters
+# $< -> One parameter
+# $@ -> Label
+ 
 # C compiler & flags
 CC=gcc
-CFLAGS=-Wall \
-	   -g
+CFLAGS=-Wall 	\
+	   -g		\
+	   -lm
 
 # exercises dependencies
 EXER1DEPS=
@@ -16,7 +22,7 @@ EXER3OBJS=
 EXER4OBJS=
 
 %.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) $(CFLAGS) -c $^
 all:
 
 exer1: $(EXER1OBJS)
@@ -35,4 +41,8 @@ exer4.o:
 
 
 clean:
-	rm -rf *.o
+	rm -f *.o
+	rm -f exer1
+	rm -f exer2
+	rm -f exer3
+	rm -f exer4
