@@ -11,20 +11,20 @@ EXTRAFLAGS=-lm
 
 # exercises dependencies
 CPU_STRESS_DEPS= cpu_stress.c
-EXER2DEPS= 1.2.c
-EXER3DEPS= 1.3.c
-EXER4DEPS= 1.3.c
+2CONSIDER_DEPS= 2_consider.c
+COUNT_WORDS_DEPS= count_words.c
+4CONSIDER_DEPS= 4_consider.c
 
 # exercises objects
 CPU_STRESS_OBJS= cpu_stress.o
-EXER2OBJS= exer2.o
-EXER3OBJS= exer3.o
-EXER4OBJS= exer4.o
+2CONSIDER_OBJS= 2_consider.o
+COUNT_WORDS_OBJS= count_words.o
+4CONSIDER_OBJS= 4_consider.o
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $^
+#%.o: %.c
+#	$(CC) $(CFLAGS) -c $^
 
-all: cpu_stress exer2 exer3 exer4
+all: cpu_stress 2_consider count_words 4_consider
 
 cpu_stress: $(CPU_STRESS_OBJS)
 	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
@@ -32,29 +32,27 @@ cpu_stress: $(CPU_STRESS_OBJS)
 cpu_stress.o: $(CPU_STRESS_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-exer2: $(EXER2OBJS)
+2_consider: $(2CONSIDER_OBJS)
 	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
-exer2.o: $(EXER2DEPS)
+2_consider.o: $(2CONSIDER_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-exer3: $(EXER3OBJS)
+count_words: $(COUNT_WORDS_OBJS)
 	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
-exer3.o: $(EXER3DEPS)
+count_words.o: $(COUNT_WORDS_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-exer4: $(EXER4OBJS)
+4_consider: $(4CONSIDER_OBJS)
 	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
-exer4.o: $(EXER4DEPS)
+4_consider.o: $(4CONSIDER_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-
 
 clean:
 	rm -f *.o
 	rm -f cpu_stress
-	rm -f exer2
-	rm -f exer3
-	rm -f exer4
+	rm -f 2_consider
+	rm -f count_words
+	rm -f 4_consider
