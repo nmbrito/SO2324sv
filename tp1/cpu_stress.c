@@ -15,8 +15,8 @@
  * a execução do seu programa.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 // Forks and stuff
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     if(argc != 2)
     {
         printf("Low arguments\n");
-        return 0;
+        return -1;
     }
 
     int iterate;
@@ -48,8 +48,12 @@ int main(int argc, char *argv[])
     for(iterate=0; iterate < numberChildren; iterate++)
     {
         pid_t pids=fork();
-        //TODO: if fork fails
-        if(pids == CHILD)
+        if(pids < CHILD)
+        {
+            // fork failed
+            return -1;
+        }
+        else if(pids == CHILD)
         {
             process_work(1e9);
             return 0;
