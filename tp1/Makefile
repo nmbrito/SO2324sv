@@ -6,56 +6,55 @@
 # C compiler & flags
 CC=gcc
 CFLAGS=-Wall 	\
-	   -g		\
-	   -lm
+	   -g
+EXTRAFLAGS=-lm
 
 # exercises dependencies
-EXER1DEPS= .c
-EXER2DEPS= .c
-EXER3DEPS= .c
-EXER4DEPS= .c
+CPU_STRESS_DEPS= cpu_stress.c
+EXER2DEPS= 1.2.c
+EXER3DEPS= 1.3.c
+EXER4DEPS= 1.3.c
 
 # exercises objects
-EXER1OBJS= .o
-EXER2OBJS= .o
-EXER3OBJS= .o
-EXER4OBJS= .o
+CPU_STRESS_OBJS= cpu_stress.o
+EXER2OBJS= exer2.o
+EXER3OBJS= exer3.o
+EXER4OBJS= exer4.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $^
 
-all: exer1 exer2 exer3 exer4
+all: cpu_stress exer2 exer3 exer4
 
-exer1: $(EXER1OBJS)
-	echo "Compiling exercise 1"
-	$(CC) $(CFLAGS) $< -o $@  
+cpu_stress: $(CPU_STRESS_OBJS)
+	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
-exer1.o: $(EXER1DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@  
+cpu_stress.o: $(CPU_STRESS_DEPS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 exer2: $(EXER2OBJS)
-	$(CC) $(CFLAGS) $< -o $@  
+	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
 exer2.o: $(EXER2DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@  
+	$(CC) $(CFLAGS) -c $< -o $@
 
 exer3: $(EXER3OBJS)
-	$(CC) $(CFLAGS) $< -o $@  
+	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
 exer3.o: $(EXER3DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@  
+	$(CC) $(CFLAGS) -c $< -o $@
 
 exer4: $(EXER4OBJS)
-	$(CC) $(CFLAGS) $< -o $@  
+	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
 
 exer4.o: $(EXER4DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@  
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 
 clean:
 	rm -f *.o
-	rm -f exer1
+	rm -f cpu_stress
 	rm -f exer2
 	rm -f exer3
 	rm -f exer4
