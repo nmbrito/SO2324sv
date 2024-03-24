@@ -15,7 +15,8 @@
 #define FILHO           0
 #define ESCRITA         STDOUT_FILENO
 #define LEITURA         STDIN_FILENO
-#define TRANSMISSAO     2               // Define se é unidirecional (1) ou bidirecional (2)
+#define UNIDIRECIONAL   2
+#define BIDIRECIONAL    4
 
 // Macros apoioTP1
 // Define o limite superior para a geração de valores aleatórios
@@ -32,17 +33,20 @@ int main(int argc, char *argv[])
 
     // Argumentos
     long numeroElementos = atol(argv[1]);
-    int numeroProcessos = atoi(argv[2]);                      // Guarda o valor passado pelo segundo argumento
+    int numeroProcessos = atoi(argv[2]);
 
     // Variáveis auxiliares
-    int iterador;                                             // TODO
+    int iterador = 0;
 
     // Vetores
     int *vectorInteiros = NULL;
     int *subvetorInteiros = NULL;
 
-
     // Cria e aloca os vetores
     alocaVetores(vectorInteiros, subvetorInteiros);
-
     vector_init_rand(vectorInteiros, subvetorInteiros, LOWER_LIMIT, UPPER_LIMIT);
+
+    vector_get_in_range(vectorInteiros, numeroElementos, subvetorInteiros, LOWER_LIMIT, UPPER_LIMIT, numeroProcessos);
+
+    return 0;
+}
