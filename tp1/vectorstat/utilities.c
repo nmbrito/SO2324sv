@@ -1,8 +1,8 @@
 // ASSIGNMENT WORK----------------------------------------------------------- //
-int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes)
-{
-    // TODO
-}
+//int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes)
+//{
+//    // TODO
+//}
 
 // CUSTOM FUNCTIONS --------------------------------------------------------- //
 void createVectors(int *vector, long vsize)
@@ -38,8 +38,10 @@ int vector_get_in_range_seq(int v[], int v_sz, int sv[], int min, int max)
 {
     long count = 0;
 
-    for (long i = 0; i < v_sz; i++) {
-        if (v[i] >= min && v[i] <= max) {
+    for (long i = 0; i < v_sz; i++)
+    {
+        if (v[i] >= min && v[i] <= max)
+        {
             sv[count++] = v[i];
         }
     }        
