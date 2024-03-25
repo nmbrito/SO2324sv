@@ -1,48 +1,53 @@
 // ./vector_stat_proc <vector dimension> <number processes>
 
-// Required
+// HEADERS ------------------------------------------------------------------ //
+// System
 #include <stdlib.h>
 #include <stdio.h>
-// Forks
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-// Minhas funções
-#include "vector_stat_proc_funcs.h"
-#include "vector_stat_proc_filho.h"
 
-// Minhas macros
-#define FILHO           0
-#define ESCRITA         STDOUT_FILENO
-#define LEITURA         STDIN_FILENO
-#define TRANSMISSAO     2               // Define se é unidirecional (1) ou bidirecional (2)
+// Custom
+#include "utilities.h"
 
-// Macros apoioTP1
-// Define o limite superior para a geração de valores aleatórios
-#define LOWER_LIMIT     0
-#define UPPER_LIMIT     100
+// MACROS ------------------------------------------------------------------- //
+// Provided (apoioTP1)
+#define LOWER_LIMIT             0
+#define UPPER_LIMIT             100
 
+// Custom macros
+#define CHILD                   0
+#define WRITE                   STDOUT_FILENO
+#define READ                    STDIN_FILENO
+#define PIPE_UNICHANNEL         2
+#define PIPE_BICHANNEL          4
+#define ARGUMENT_COUNT_ERROR    -1
+
+// MAIN --------------------------------------------------------------------- //
+// argv[0] -> program name
+// argv[1] -> vector dimension
+// argv[2] -> number of processes
 int main(int argc, char *argv[])
 {
     if(argc != 3)
     {
         printf("Utilização incorreta. Forma correta: ./vector_stat_proc <dimensão_vetor> <número_de_processos>");
+        printf("Syntax wrong. Usage: $ ./vector_stat_proc <vector dimension> <number processes>");
+
         return -1;
     }
+    
+    long vectorSize = atoi(argv[1]);
+    int numberProcesses = atoi(argv[2]);
 
-    // Argumentos
-    long numeroElementos = atol(argv[1]);
-    int numeroProcessos = atoi(argv[2]);                      // Guarda o valor passado pelo segundo argumento
+    int *vectorValues = NULL;
+    int *vectorSubValues = NULL;
 
-    // Variáveis auxiliares
-    int iterador;                                             // TODO
-
-    // Vetores
-    int *vectorInteiros = NULL;
-    int *subvetorInteiros = NULL;
+    createVectors(vectorValues, vectorSize);
+    createVectors(vectorSubValues, vectorSize);
 
 
-    // Cria e aloca os vetores
-    alocaVetores(vectorInteiros, subvetorInteiros);
 
-    vector_init_rand(vectorInteiros, subvetorInteiros, LOWER_LIMIT, UPPER_LIMIT);
+    return 0;
+}
