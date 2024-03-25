@@ -8,8 +8,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+<<<<<<< HEAD
 // Custom
 #include "utilities.h"
+=======
+// Minhas macros
+#define FILHO           0
+#define ESCRITA         STDOUT_FILENO
+#define LEITURA         STDIN_FILENO
+#define UNIDIRECIONAL   2
+#define BIDIRECIONAL    4
+>>>>>>> 921f24bcf04357f794b1ad900bd79bba9a65a7fe
 
 // MACROS ------------------------------------------------------------------- //
 // Provided (apoioTP1)
@@ -41,6 +50,7 @@ int main(int argc, char *argv[])
     long vectorSize = atoi(argv[1]);
     int numberProcesses = atoi(argv[2]);
 
+<<<<<<< HEAD
     int *vectorValues = NULL;
     int *vectorSubValues = NULL;
 
@@ -48,6 +58,24 @@ int main(int argc, char *argv[])
     createVectors(vectorSubValues, vectorSize);
 
 
+=======
+    // Argumentos
+    long numeroElementos = atol(argv[1]);
+    int numeroProcessos = atoi(argv[2]);
+
+    // Variáveis auxiliares
+    int iterador = 0;
+
+    // Vetores
+    int *vectorInteiros = NULL;
+    int *subvetorInteiros = NULL;
+
+    // Cria e aloca os vetores
+    alocaVetores(vectorInteiros, subvetorInteiros);
+    vector_init_rand(vectorInteiros, subvetorInteiros, LOWER_LIMIT, UPPER_LIMIT);
+
+    vector_get_in_range(vectorInteiros, numeroElementos, subvetorInteiros, LOWER_LIMIT, UPPER_LIMIT, numeroProcessos);
+>>>>>>> 921f24bcf04357f794b1ad900bd79bba9a65a7fe
 
     return 0;
 }

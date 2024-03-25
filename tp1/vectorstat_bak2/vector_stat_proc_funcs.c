@@ -9,50 +9,40 @@
  */
 int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes)
 {
-    int numeroElementosPorFilho = v_sz / n_processes;
-    // TODO: Se for ímpar adicionar +1 elemento
-    int indexSubvetorInicial=0;
-    int indexSubvetorFinal=numeroElementosPorFilho;
+    int elementosPorFilho = v_sz / n_processes;
+    int restos = v_sz % n_processes;
+    int vOrigem = v;
 
-    for(int iterador = 0; iterador < n_processes ; iterador++)
+    // Criação de pipes
+    int *tubosFD = (int *) sizeof(int) * (n_processes * UNIDIRECIONAL);
+
+    if(restos == 0)
     {
-        indexSubvetorInicial = indexSubvetorFinal + 1;
-        indexSubvetorFinal += numeroElementosPorFilho;
-
-        if(iterador == n_processes)
-        {
-            if(v_sz % n_processes != 0)
-            {
-                numeroElementosPorFilho++;
-            }
-        }
-
-        pid_t ramal=fork();
-        if(ramal < FILHO)
-        {
-            // Falha na criação do ramal
-            perror("Erro na criação do processo filho.");
-            return -1;
-        }
-        else if(ramal == FILHO)
-        {
-            return processoFilho(); //TODO
-        }
+        int elementosPorFilhoRetificado = elementosPorFilho++;
     }
 
-
-
-
-
-    long count = 0;
-    for (long i = 0; i < v_sz; i++)
+    for(elementosPorFilho; elementosPorFilho > 0; elementosPorFilho--)
     {
-        if (v[i] >= min && v[i] <= max)
+        for(restos; restos > 0; restos--, elementosPorFilho--)
         {
-            sv[count++] = v[i];
+            processoFilho();
+            v += elementosPorFilhoRetificado;
+            tubosFD += UNIDIRECIONAL;
         }
-    }        
-    return count;
+            processoFilho();
+            v += elementosPorFilho;
+            tubosFD += UNIDIRECIONAL;
+    }
+
+    //long count = 0;
+    //for (long i = 0; i < v_sz; i++)
+    //{
+    //    if (v[i] >= min && v[i] <= max)
+    //    {
+    //        sv[count++] = v[i];
+    //    }
+    //}        
+    //return count;
 }
 
 // Funções do ApoioTP1
