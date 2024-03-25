@@ -11,25 +11,13 @@
 // Custom
 #include "utilities.h"
 
-// MACROS ------------------------------------------------------------------- //
-// Provided (apoioTP1)
-#define LOWER_LIMIT             0
-#define UPPER_LIMIT             100
-
-// Custom macros
-#define CHILD                   0
-#define WRITE                   STDOUT_FILENO
-#define READ                    STDIN_FILENO
-#define PIPE_UNICHANNEL         2
-#define PIPE_BICHANNEL          4
-#define ARGUMENT_COUNT_ERROR    -1
-
 // MAIN --------------------------------------------------------------------- //
 // argv[0] -> program name
 // argv[1] -> vector dimension
 // argv[2] -> number of processes
 int main(int argc, char *argv[])
 {
+
     if(argc != 3)
     {
         printf("Utilização incorreta. Forma correta: ./vector_stat_proc <dimensão_vetor> <número_de_processos>");
@@ -38,14 +26,26 @@ int main(int argc, char *argv[])
         return -1;
     }
     
-    long vectorSize = atoi(argv[1]);
+    long arraySize = atoi(argv[1]);
     int numberProcesses = atoi(argv[2]);
 
-    int *vectorValues = NULL;
-    int *vectorSubValues = NULL;
+    // Arrays
+    int *arrayValues = createArrays(&arrayValues, arraySize);
+    int *arraySubValues = createArrays(&arraySubValues, arraySize);
 
-    createVectors(vectorValues, vectorSize);
-    createVectors(vectorSubValues, vectorSize);
+    arrayValues[0] = 20;
+    arrayValues[1] = 40;
+    arrayValues[2] = 60;
+    arrayValues[3] = 80;
+    arrayValues[4] = 100;
+    arrayValues[5] = 120;
+    arrayValues[6] = 140;
+    arrayValues[7] = 160;
+    arrayValues[8] = 180;
+    arrayValues[9] = 200;
+
+    // Call main function
+    int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
 
     return 0;
 }
