@@ -1,11 +1,18 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#include "child.h"
 int childlabor(int **v, int **v2)
 {
     // Pipe creation
-    if(pipe(pipesfds) < 0)
-    {
-        perror("Error creating pipe");
-        return -1;
-    }
+    //if(pipe(pipesfds) < 0)
+    //{
+    //    perror("Error creating pipe");
+    //    return -1;
+    //}
 
     // Fork creation
     pid_t forker = fork();
@@ -16,12 +23,14 @@ int childlabor(int **v, int **v2)
     }
     else if(forker == CHILD)
     {
-        close(pipesfds[READ]);
-
+        //close(pipesfds[READ]);
+        printf("Eu sou filho %d", forker);
+        return 0;
     }
     else
     {
-        close(pipesfds[WRITE]);
+        //close(pipesfds[WRITE]);
+
     }
 }
 
