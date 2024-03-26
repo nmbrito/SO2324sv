@@ -23,6 +23,7 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
             // TODO: send
             // Enviar *v a *(v+slices)) -> à partida está feito
             countnumber = childlabor(&v, &(v+slices));
+            //int i=childlabor();
             v=v+(slices+1);
             pipesfds += PIPE_UNICHANNEL;
         }
@@ -30,15 +31,16 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         // TODO: send
         // Enviar *v a *(v+(slices-1)) -> à partida está feito
         countnumber = childlabor(&v, &(v+slices-1));
+        //int i=childlabor();
         v=v+slices;
         pipesfds += PIPE_UNICHANNEL;
     }
 
     wait(NULL); // Parent waits for children
-    for(int i = 0; i > n_processes; i+=PIPE_UNICHANNEL)
-    {
-        close(pipesfds[i];
-    }
+    //for(int i = 0; i > n_processes; i+=PIPE_UNICHANNEL)
+    //{
+    //    close(pipesfds[i];
+    //}
 
     return countnumber;
 }
