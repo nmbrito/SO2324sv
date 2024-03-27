@@ -5,15 +5,10 @@
 #include <sys/wait.h>
 
 #include "child.h"
-int childlabor(int **v, int **v2)
-{
-    // Pipe creation
-    //if(pipe(pipesfds) < 0)
-    //{
-    //    perror("Error creating pipe");
-    //    return -1;
-    //}
 
+//int childlabor(int **v, int **v2)
+int childlabor()
+{
     // Fork creation
     pid_t forker = fork();
     if(forker < CHILD)
@@ -24,13 +19,7 @@ int childlabor(int **v, int **v2)
     else if(forker == CHILD)
     {
         //close(pipesfds[READ]);
-        printf("Eu sou filho %d", forker);
+        printf("ALLOOOOOO");
         return 0;
     }
-    else
-    {
-        //close(pipesfds[WRITE]);
-
-    }
 }
-
