@@ -13,6 +13,6 @@
 #define PIPE_BICHANNEL          4
 #define ARGUMENT_COUNT_ERROR    -1
 
-int childlabor(int **V, int **v2)
+int childlabor();
 
 #endif
