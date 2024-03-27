@@ -17,7 +17,7 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     int *pipesfds = createArrays(&pipesfds, n_processes * PIPE_UNICHANNEL);
 
     // Testing
-    for(int ongoingProcesses = 0; ongoingProcesess < n_processes; ongoingProcesses++, sliceLeftover--)
+    for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++, sliceLeftover--)
     {
         if(sliceLeftover > 0)
         {
