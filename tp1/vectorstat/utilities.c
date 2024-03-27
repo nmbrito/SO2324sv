@@ -5,42 +5,41 @@
 #include <sys/wait.h>
 
 #include "utilities.h"
+#include "child.h"
 
 // ASSIGNMENT WORK----------------------------------------------------------- //
 int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes)
 {
-    int slices = v_sz / n_processes;
-    int sliceLeftover = v_sz % n_processes;
-    int countnumber = 0;
+    int slices = v_sz / n_processes;        // Number of elements to assign
+    int sliceLeftover = v_sz % n_processes; // Odd number residue
 
     // Pipe array
     int *pipesfds = createArrays(&pipesfds, n_processes * PIPE_UNICHANNEL);
 
-    for(n_processes; n_processes > 0; n_processes--)
+    // Testing
+    for(int ongoingProcesses = 0; ongoingProcesess < n_processes; ongoingProcesses++, sliceLeftover--)
     {
-        for(sliceLeftover; sliceLeftover > 0; sliceLeftover--, n_processes--)
+        if(sliceLeftover > 0)
         {
-            // TODO: send
-            // Enviar *v a *(v+slices)) -> à partida está feito
-            countnumber = childlabor(&v, &(v+slices));
-            //int i=childlabor();
-            v=v+(slices+1);
-            pipesfds += PIPE_UNICHANNEL;
+            addLeftover = 0;
+            moveLeftover = 1;
+        }
+        else
+        {
+            addLeftover = -1;
+            moveLeftover = 0;
         }
 
-        // TODO: send
-        // Enviar *v a *(v+(slices-1)) -> à partida está feito
-        countnumber = childlabor(&v, &(v+slices-1));
-        //int i=childlabor();
-        v=v+slices;
-        pipesfds += PIPE_UNICHANNEL;
+        // Send *v to *(v+slices+addLeftover)
+        childlabor();
+        v=v+(slices+moveLeftover);      // Move to next element address
+        pipesfds += PIPE_UNICHANNEL;    // Move to next pipe address
     }
 
-    wait(NULL); // Parent waits for children
-    //for(int i = 0; i > n_processes; i+=PIPE_UNICHANNEL)
-    //{
-    //    close(pipesfds[i];
-    //}
+    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)
+    {
+        wait(NULL); // Parent waits for children
+    }
 
     return countnumber;
 }
