@@ -1,6 +1,6 @@
 // ./vector_stat_proc <vector dimension> <number processes>
 
-// HEADERS ------------------------------------------------------------------ //
+// HEADERS ------------------------------------------------------------------ // {{{1
 // System
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,7 +11,9 @@
 // Custom
 #include "utilities.h"
 
-// MAIN --------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- // 1}}}
+
+// MAIN --------------------------------------------------------------------- // {{{1
 // argv[0] -> program name
 // argv[1] -> vector dimension
 // argv[2] -> number of processes
@@ -31,7 +33,9 @@ int main(int argc, char *argv[])
 
     // Arrays
     int *arrayValues = createArrays(&arrayValues, arraySize);
-    int *arraySubValues = createArrays(&arraySubValues, arraySize);
+
+    // It's possible that the +1 will be removed if I can write two times
+    int *arraySubValues = createArrays(&arraySubValues, ((arraySize / numberProcesses) + 1);
 
     arrayValues[0] = 20;
     arrayValues[1] = 40;
@@ -47,5 +51,8 @@ int main(int argc, char *argv[])
     // Call main function
     int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
 
+    free(arrayValues);
+    free(arraySubValues);
     return 0;
 }
+// -------------------------------------------------------------------------- // 1}}}
