@@ -53,3 +53,13 @@
     //    perror("Error creating pipe");
     //    return -1;
     //}
+
+
+    for(int i = 0; i < (n_processes * PIPE_UNICHANNEL); i+=2)
+    {
+        close(pipesfds[i+1]);
+
+        long counted = pipesfds[i];
+        read(pipesfds[i] , , );
+
+    }
