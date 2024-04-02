@@ -91,7 +91,6 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         {
             v += (slices+moveLeftover);     // Move to next element address
             pipesFDS += PIPE_UNICHANNEL;    // Move to next pipe address
-
         }
     }
 
