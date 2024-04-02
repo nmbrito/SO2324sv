@@ -1,8 +1,6 @@
 # Eclipse metadata
 /.metadata/
 
-# Ignore TP1 output folder
-
 # C compiled object files
 *.o
 
