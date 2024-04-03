@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     // Call main function
     int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
-    if(count == CHILD_RETURN) return 0; // So child doesn't slip to main
+    if(count == CHILD_RETURN_SUCCESS) return 0; // So child doesn't slip to main
 
     printf("Count: %d\n", count);
 
