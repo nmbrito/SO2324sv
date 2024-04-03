@@ -1,4 +1,4 @@
-// HEADERS ------------------------------------------------------------------ // {{{1
+// HEADERS ----------------------------------------------------------------------------- // {{{1
 // System
 #include <stdlib.h>
 #include <stdio.h>
@@ -8,35 +8,31 @@
 
 // Custom
 #include "utilities.h"
+// ------------------------------------------------------------------------------------- // 1}}}
 
-// -------------------------------------------------------------------------- // 1}}}
-
-// ASSIGNMENT WORK----------------------------------------------------------- // {{{1
+// ASSIGNMENT WORK---------------------------------------------------------------------- // {{{1
+// int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes); {{{2
 int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes)
 {
-    // Array size section for each child
-    long slices = v_sz / n_processes;
-    long sliceLeftover = v_sz % n_processes;
+    long slices = v_sz / n_processes;                                                   // Number of sections splits in the array depending on number of processes
+    long sliceLeftover = v_sz % n_processes;                                            // Store residue for further split calculations
 
-    // Array position if there is remainder
-    int addLeftover = 0;
-    int moveLeftover = 0;
+    int addLeftover = 0;                                                                // Aligns elements depending on residue
+    int moveLeftover = 0;                                                               // Aligns array forward move depending on residue
 
-    // Store counted values written in sv array
-    long svCount[1] = {0};
+    long svCount[1] = {0};                                                              // Stores counted values written in sv array by child process
 
-    // Resize sv (smaller array for children)
-    int *svAddress = sv;
-    sv = realloc(sv, (sizeof(int) * slices));
+    int *vAddress = v;                                                                  // Stores the original v address
+    int *svAddress = sv;                                                                // Stores the original sv address
+                                                                                        //
+    sv = realloc(sv, (sizeof(int) * slices));                                           // Instead of sending a sizeable array, send only the needed size
 
-    // Pipe array
-    int *pipesFDS = createIntArrays(&pipesFDS, (n_processes * PIPE_UNICHANNEL));
-    int *pipesFDSAddress = pipesFDS;
+    int *pipesFDS = createIntArrays(&pipesFDS, (n_processes * PIPE_UNICHANNEL));        // Create pipe array
+    int *pipesFDSAddress = pipesFDS;                                                    // Stores the original pipe address
 
     for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)
     {
-        // Array element alignments
-        if(sliceLeftover > 0)
+        if(sliceLeftover > 0)                                                           // Array adjustment
         {
             addLeftover = 0;
             moveLeftover = 1;
@@ -48,24 +44,20 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
             moveLeftover = 0;
         }
 
-        // Pipe creation
-        pipe(pipesFDS);
+        pipe(pipesFDS);                                                                 // Pipe creation for each child
 
-        // Fork creation
-        pid_t forker = fork();
+        pid_t forker = fork();                                                          // Fork creation
 
         if(forker < CHILD)
         {
             perror("Error forking");
-            return -1;
+            return ERROR_RETURN;
         }
         else if(forker == CHILD)
         {
-            // Child will write only
-            close(pipesFDS[READ]);
+            close(pipesFDS[READ]);                                                      // Child will write only
 
-            // Write valid values to array
-            for (long i = 0; i < (slices + addLeftover); i++)
+            for (long i = 0; i < (slices + addLeftover); i++)                           // Write valid values to array
             {
                 if (v[i] >= min && v[i] <= max)
                 {
@@ -73,74 +65,66 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
                 }
             }
 
-            // Pipe write counted valid numbers, then array
-            write(pipesFDS[WRITE], svCount, sizeof(long));
-            write(pipesFDS[WRITE], sv, (sizeof(int) * svCount[0]));
+            write(pipesFDS[WRITE], svCount, sizeof(long));                              // Send counted numbers to parent
+            write(pipesFDS[WRITE], sv, (sizeof(int) * svCount[0]));                     // Then write the subarray to parent
 
-            // Pipe close
-            close(pipesFDS[WRITE]);
+            close(pipesFDS[WRITE]);                                                     // After job done, close write pipe
 
-            // Child needs to free these arrays
-            free(v);
-            free(sv);
-            free(pipesFDS);
+            free(v);                                                                    // Child free array
+            free(sv);                                                                   // Child free subarray
+            free(pipesFDS);                                                             // Child free pipe array
 
-            return -2;
+            return CHILD_RETURN_SUCCESS;                                                // It cannot return 0, otherwise it'll be stuck in main
         }
         else
         {
-            v += (slices+moveLeftover);     // Move to next element address
-            pipesFDS += PIPE_UNICHANNEL;    // Move to next pipe address
+            v += (slices+moveLeftover);                                                 // Move to next slice address
+            pipesFDS += PIPE_UNICHANNEL;                                                // Move to next pipe address
         }
     }
 
-    long countNumber = 0;
+    long countNumber = 0;                                                               // Allows parent process to store counted values
 
-    // Recover original pipesFDS address
-    pipesFDS = pipesFDSAddress;
+    pipesFDS = pipesFDSAddress;                                                         // Restores original pipesFDS address
 
-    // Restores sv to full size
-    sv = realloc(sv, (sizeof(int) * v_sz));
+    sv = realloc(sv, (sizeof(int) * v_sz));                                             // Restores subarray to full size
 
-    // Parent reads all pipes
-    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)
+    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Pipe reading
     {
-        // Parent will read only
-        close(pipesFDS[WRITE]);
+        close(pipesFDS[WRITE]);                                                         // Parent will read only
 
-        // Read counted valid numbers
-        read(pipesFDS[READ], svCount, sizeof(long));
-        read(pipesFDS[READ], sv, sizeof(int) * svCount[0]);
+        read(pipesFDS[READ], svCount, sizeof(long));                                    // Read the counted valid numbers
+        read(pipesFDS[READ], sv, sizeof(int) * svCount[0]);                             // Read svCount[0] bytes of the subarray sent by child process
 
-        // Close pipe
-        close(pipesFDS[READ]);
+        close(pipesFDS[READ]);                                                          // Close the read pipe
 
-        // Store and sum valid counted numbers
-        countNumber += svCount[0];
+        countNumber += svCount[0];                                                      // Sums the valid counted values to the previous read
 
-        // Move sv forward
-        sv += (int) svCount[0]; //ISTO DEIXA-ME PREOCUPADO! Vai andar ints ou longs???
+        sv += svCount[0];                                                               // Align the array for the next read
 
-        // Next pair of pipes
-        pipesFDS += PIPE_UNICHANNEL;
-
+        pipesFDS += PIPE_UNICHANNEL;                                                    // Next pair os pipes
     }
 
-    // Recover original sv address
-    sv = svAddress;
-    sv = realloc(sv, (sizeof(int) * countNumber));
+    v = vAddress;                                                                       // Because the v array was moved around, restore the original address
+    sv = svAddress;                                                                     // Because the subarray was moved around, restore the original address
+    sv = realloc(sv, (sizeof(int) * countNumber));                                      // Resize the subvalues to the number of read valid values
 
-    // Wait for children
-    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)
+    pipesFDS = pipesFDSAddress;                                                         // Restores, yet again, the pipe address
+
+    free(pipeFDS);                                                                      // PipeFDS array was created in this function, array gets freed
+
+    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
     {
         wait(NULL);
     }
 
     return countNumber;
 }
-// -------------------------------------------------------------------------- // 1}}}
+// ------------------------------------------------------------------------------------- // 2}}}
+// ------------------------------------------------------------------------------------- // 1}}}
 
-// CUSTOM FUNCTIONS --------------------------------------------------------- // {{{1
+// CUSTOM FUNCTIONS -------------------------------------------------------------------- // {{{1
+// int *createIntArrays(int **array, long arrayDim); ----------------------------------- // {{{2
 int *createIntArrays(int **array, long arrayDim)
 {
     printf("Initializing a vector of %ld bytes\n", arrayDim);
@@ -149,15 +133,16 @@ int *createIntArrays(int **array, long arrayDim)
     if (array == NULL)
     {
         fprintf(stderr, "Memory allocation error\n");
-        return -1;
+        return ERROR_RETURN;
         //exit(0); // Not yet
     }
 
     return *array;
 }
-// -------------------------------------------------------------------------- // 1}}}
+// ------------------------------------------------------------------------------------- // 2}}}
+// ------------------------------------------------------------------------------------- // 1}}}
 
-// APOIOTP1 FUNCTIONS-------------------------------------------------------- // {{{1
+// APOIOTP1 FUNCTIONS------------------------------------------------------------------- // {{{1
 // Random number generator
 int get_random(int min, int max)
 {
@@ -213,3 +198,4 @@ void codeEval()
 
     printf("Values between [%d..%d]: %ld\n", values_min, values_max, count);
 }
+// ------------------------------------------------------------------------------------- // 1}}}
