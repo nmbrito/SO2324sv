@@ -68,6 +68,35 @@
 
 %% Document start --------------------------------------------------------------{{{1
 \begin{document}
+    \section{Algoritmo}
+        \subsection{main}
+            Receber tamanho do array e o número de processos por argumento.
+            Criar o array de valores e o subarray.
+            Iniciar o array de valores com números aleatórios.
+            Chamar a função que obtém os valores num determinado intervalo e guardar esse valor numa variável.
+            Prender o processo filho (saindo do main).
+        \subsection{função}
+            Dividir array de valores para os diversos processos filhos.
+            Se existir resto na divisão, equilibrar o máximo possível o tamanho do array de valores para cada processo.
+            Guardar o endereço original do array de valores.
+            Guardar o endereço original do subarray e redimensionar o subarray de forma a que cada processo tenha um valor reduzido do array (ocupando menos memória).
+            Criar o array de pipes e guardar o seu endereço original.
+            Criar os pipes e o fork.
+            Fechar o pipe de leitura.
+            Processo filho valida os valores, escreve no contador e passa esse valor ao pai, seguido do subarray processado.
+            Fefchar o pipe de escrita.
+            No fim, liberta os arrays alocados dinamicamente e devolve um valor que permita sair do main e do programa.
+
+            O processo pai terá de recuperar os endereços originais para iterá-los nas funções.
+            Redimensionar o subarray outra vez, mas agora ao seu tamanho original.
+            Fechar o pipe de escrita.
+            Ler dos pipes a informação, somar o valor contado, incrementar a posição do subarray e do pipe.
+            Recuperar ambos os endereços originais.
+            Libertar o array de pipes criado dinamicamente.
+            Esperar pelos filhos.
+
+            Devolver o número contado.
+
     \section{Código}
         \begin{center}
             \begin{longtable}{ l l l }
