@@ -12,8 +12,8 @@
 #define WRITE                   STDOUT_FILENO
 #define PIPE_UNICHANNEL         2
 #define PIPE_BICHANNEL          4
-#define ARGUMENT_COUNT_ERROR    -1
-#define CHILD_RETURN            -2
+#define ERROR_RETURN            -1
+#define CHILD_RETURN_SUCCESS    -2
 
 int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_processes);
 int *createIntArrays(int **array, long arrayDim);
