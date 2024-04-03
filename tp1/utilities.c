@@ -23,9 +23,9 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     long svCount[1] = {0};                                                              // Stores counted values written in sv array by child process
 
     int *vAddress = v;                                                                  // Stores the original v address
-    int *svAddress = sv;                                                                // Stores the original sv address
-                                                                                        //
-    sv = realloc(sv, (sizeof(int) * slices));                                           // Instead of sending a sizeable array, send only the needed size
+    //int *svAddress = sv;                                                                // Stores the original sv address
+
+    //sv = realloc(sv, (sizeof(int) * slices));                                           // Instead of sending a sizeable array, send only the needed size
 
     int *pipesFDS = createIntArrays(&pipesFDS, (n_processes * PIPE_UNICHANNEL));        // Create pipe array
     int *pipesFDSAddress = pipesFDS;                                                    // Stores the original pipe address
@@ -70,16 +70,12 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
 
             close(pipesFDS[WRITE]);                                                     // After job done, close write pipe
 
-            free(v);                                                                    // Child free array
-            free(sv);                                                                   // Child free subarray
-            free(pipesFDS);                                                             // Child free pipe array
-
             return CHILD_RETURN_SUCCESS;                                                // It cannot return 0, otherwise it'll be stuck in main
         }
         else
         {
-            v += (slices+moveLeftover);                                                 // Move to next slice address
-            pipesFDS += PIPE_UNICHANNEL;                                                // Move to next pipe address
+            v = v + (slices+moveLeftover);                                              // Move to next slice address
+            pipesFDS = pipesFDS + PIPE_UNICHANNEL;                                      // Move to next pipe address
         }
     }
 
@@ -87,7 +83,7 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
 
     pipesFDS = pipesFDSAddress;                                                         // Restores original pipesFDS address
 
-    sv = realloc(sv, (sizeof(int) * v_sz));                                             // Restores subarray to full size
+    //sv = realloc(sv, (sizeof(int) * v_sz));                                             // Restores subarray to full size
 
     for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Pipe reading
     {
@@ -98,20 +94,20 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
 
         close(pipesFDS[READ]);                                                          // Close the read pipe
 
-        countNumber += svCount[0];                                                      // Sums the valid counted values to the previous read
+        countNumber = countNumber + svCount[0];                                         // Sums the valid counted values to the previous read
 
-        sv += svCount[0];                                                               // Align the array for the next read
+        sv = sv + svCount[0];                                                           // Align the array for the next read
 
-        pipesFDS += PIPE_UNICHANNEL;                                                    // Next pair os pipes
+        pipesFDS = pipesFDS + PIPE_UNICHANNEL;                                          // Next pair os pipes
     }
 
     v = vAddress;                                                                       // Because the v array was moved around, restore the original address
-    sv = svAddress;                                                                     // Because the subarray was moved around, restore the original address
-    sv = realloc(sv, (sizeof(int) * countNumber));                                      // Resize the subvalues to the number of read valid values
+    //sv = svAddress;                                                                     // Because the subarray was moved around, restore the original address
+    //sv = realloc(sv, (sizeof(int) * countNumber));                                      // Resize the subvalues to the number of read valid values
 
     pipesFDS = pipesFDSAddress;                                                         // Restores, yet again, the pipe address
 
-    free(pipeFDS);                                                                      // PipeFDS array was created in this function, array gets freed
+    free(pipesFDS);                                                                     // PipeFDS array was created in this function, array gets freed
 
     for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
     {
