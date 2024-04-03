@@ -18,7 +18,6 @@
 {
     keepspaces=true,
     numbersep=5pt,
-
     basicstyle=\footnotesize\ttfamily,
     keywordstyle=\bfseries,
     numbers=left,                                   % where to put the line-numbers
@@ -40,27 +39,6 @@
     escapeinside={\%*}{*)},                         % if you want to add a comment within your code
     morekeywords={*,var,template,new}               % if you want to add more keywords to the set
 }
-\fancyhf{}                                          % {fancyhdr} clear off all default fancyhdr headers and footers
-\lfoot{\small{\emph{\projtitle, \projsubtitle}}}    % {fancyhdr}
-\rfoot{\small{\thepage\ / \pageref{LastPage}}}      % {fancyhdr}
-\pagestyle{fancy}                                   % {fancyhdr} apply the fancy header style
-\renewcommand{\headrulewidth}{0.0pt}                % {fancyhdr} no head rule
-\renewcommand{\footrulewidth}{0.4pt}                % {fancyhdr}
-\hypersetup{                                        % {hyperref}
-    plainpages=false,
-    pdfpagelayout=SinglePage,
-    bookmarksopen=false,
-    bookmarksnumbered=true,
-    breaklinks=true,
-    linktocpage,
-    colorlinks=true,
-    linkcolor=engineering,
-    urlcolor=engineering,
-    filecolor=engineering,
-    citecolor=engineering,
-    allcolors=engineering
-}
-
 %\usepackage{comment}               % Permite criar um segmento de comentários (/begin{comment} [...] /end{comment})
 %\usepackage{xcolor}                % Colorir texto (esta versão é mais flexível do que a {color})
 %\usepackage{subcaption}            % Subcaptions para figuras
@@ -101,13 +79,13 @@
         \begin{center}
             \begin{longtable}{ l l l }
                 %% [ inserir texto fora da coluna ]
-                vector_stat_.c & utilities.c & utilities.h
-                \lstset{style=ccode} \lstinputlisting[language=C, caption=]{vector_stat_proc.c} & \lstset{style=ccode} \lstinputlisting[language=C, caption=]{utilities.c} & \lstset{style=ccode} \lstinputlisting[language=C, caption=]{utilities.h}
+vector\_stat\_.c & utilities.c & utilities.h
+\lstset{style=ccode} \lstinputlisting[language=C, caption=vector]{vector_stat_proc.c} & \lstset{style=ccode} \lstinputlisting[language=C, caption=utilities]{utilities.c} & \lstset{style=ccode} \lstinputlisting[language=C, caption=header]{utilities.h}
             \end{longtable}
         \end{center}
 
     \section{Estratégias adotadas}
-        O objetivo do enunciado é expandir a função "int vector_get_in_range();" de forma a tirar proveito da criação de processos. Assim, optou-se por desenvolver toda a
+        O objetivo do enunciado é expandir a função "int vector\_get\_in\_range();" de forma a tirar proveito da criação de processos. Assim, optou-se por desenvolver toda a
         lógica de processos dentro da função, tornando-a genérica.
 
         A assinatura da função requer dois vetores. O vetor principal onde será preenchido com números aleatórios e um sub-vetor com os valores compreendidos num
@@ -115,7 +93,7 @@
 
         Todas as funções foram inseridas no ficheiro "utilities.c" de maneira que o código fique mais organizado.
 
-        Na função "int vector_get_in_range();" procedeu-se ao cálculo da quantidade de elementos a atribuir por processo.
+        Na função "int vector\_get\_in\_range();" procedeu-se ao cálculo da quantidade de elementos a atribuir por processo.
         O foco principal foi atribuir os elementos o
         mais equilibradamente possível, não havendo processos com valores exagerados de posições a processar. No caso da divisão não ser um número inteiro, o número de
         elementos é atribuído de maneira sensata, preenchendo de modo equitativo até não sobrar resíduo da divisão. Para alcançar este objetivo, criaram-se duas
