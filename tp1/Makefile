@@ -5,26 +5,29 @@
  
 # C COMPILER & FLAGS
 CC=gcc
-CFLAGS=-Wall 	\
-	   -g
-EXTRAFLAGS=-lm
+CFLAGS=-Wall
+CFLAGS+=-g
+CFLAGS+=-lm
 
-# EXERCISES DEPENDENCIES
+# DIRS
+OBJECTDIR=.obj/
+
+
+# DEPENDENCIES
 CPU_STRESS_DEPS=cpu_stress.c
 2CONSIDER_DEPS=2_consider.c
 COUNT_WORDS_DEPS=count_words.c
 4CONSIDER_DEPS=4_consider.c
-VECTOR_STAT_PROC_DEPS=vector_stat_proc.c
-UTILITIES_DEPS=utilities.c
-TESTFILE_DEPS=testfile.c
 
-# EXERCISES OBJECTS
+VECTOR_STAT_PROC_DEPS=vector_stat_proc.c utilities.c
+
+# OBJECTS
 CPU_STRESS_OBJS=cpu_stress.o
 2CONSIDER_OBJS=2_consider.o
 COUNT_WORDS_OBJS=count_words.o
 4CONSIDER_OBJS=4_consider.o
+
 VECTOR_STAT_PROC_OBJS=vector_stat_proc.o utilities.o
-TESTFILE_OBJS=testfile.o
 
 #%.o: %.c
 #	$(CC) $(CFLAGS) -c $^
