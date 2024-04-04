@@ -105,14 +105,13 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     //sv = svAddress;                                                                     // Because the subarray was moved around, restore the original address
     //sv = realloc(sv, (sizeof(int) * countNumber));                                      // Resize the subvalues to the number of read valid values
 
-    pipesFDS = pipesFDSAddress;                                                         // Restores, yet again, the pipe address
-
-    free(pipesFDS);                                                                     // PipeFDS array was created in this function, array gets freed
-
     for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
     {
         wait(NULL);
     }
+
+    pipesFDS = pipesFDSAddress;                                                         // Restores, yet again, the pipe address
+    free(pipesFDS);                                                                     // PipeFDS array was created in this function, array gets freed
 
     return countNumber;
 }
