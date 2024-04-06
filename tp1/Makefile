@@ -1,91 +1,89 @@
-# Remember:
+# Notes
 # $^ -> All parameters
 # $< -> One parameter
 # $@ -> Label
- 
-# C COMPILER & FLAGS
-CC=gcc
-CFLAGS=-Wall
-CFLAGS+=-g
-CFLAGS+=-lm
+# target: prerequisites
+# OBJS = $(SRCS:%=$(OBJECTS_DIR)/%.o)
 
-# DIRS
-OBJECTDIR=.obj/
+	#$(CC) $(CFLAGS) -c $^ -o $@ $(EXTRAFLAGS)
+# Compiler settings
+# -Wall		verbose compiler warnings
+# -g		compile with debug information
+CC = gcc
+CFLAGS  = -Wall
+CFLAGS += -g
+EXTRAFLAGS = -lm
 
+# Directories
+TARGETS_DIR = ./targets
+OBJECTS_DIR = ./.objects
 
-# DEPENDENCIES
-CPU_STRESS_DEPS=cpu_stress.c
-2CONSIDER_DEPS=2_consider.c
-COUNT_WORDS_DEPS=count_words.c
-4CONSIDER_DEPS=4_consider.c
+# Objects (.o)
+OBJS_CPU_STRESS   	   = $(OBJECTS_DIR)/cpu_stress.o
+OBJS_EXERCISE2    	   = $(OBJECTS_DIR)/exercise2.o
+OBJS_COUNT_WORDS  	   = $(OBJECTS_DIR)/count_words.o
+OBJS_EXERCISE4    	   = $(OBJECTS_DIR)/exercise4.o
+OBJS_VECTOR_STAT_PROC  = $(OBJECTS_DIR)/vector_stat_proc.o
+OBJS_VECTOR_STAT_PROC += $(OBJECTS_DIR)/utilities.o
 
-VECTOR_STAT_PROC_DEPS=vector_stat_proc.c utilities.c
+# Dependencies (.c)
+DEPS_CPU_STRESS        = cpu_stress.c
+DEPS_EXERCISE2         = exercise2.c
+DEPS_COUNT_WORDS       = count_words.c
+DEPS_EXERCISE4         = exercise4.c
+DEPS_VECTOR_STAT_PROC  = vector_stat_proc.c
+DEPS_VECTOR_STAT_PROC += utilities.c
 
-# OBJECTS
-CPU_STRESS_OBJS=cpu_stress.o
-2CONSIDER_OBJS=2_consider.o
-COUNT_WORDS_OBJS=count_words.o
-4CONSIDER_OBJS=4_consider.o
+# Rules - DON'T CHANGE -------------------------------------{{{1
+all: cpu_stress exercise2 count_words exercise4 vector_stat_proc
 
-VECTOR_STAT_PROC_OBJS=vector_stat_proc.o utilities.o
+# cpu_stress ---------------------------------------------- {{{2
+cpu_stress : $(OBJS_CPU_STRESS)
+	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
-#%.o: %.c
-#	$(CC) $(CFLAGS) -c $^
-
-# BUILD ALL
-all: cpu_stress 2_consider count_words 4_consider vector_stat_proc
-
-# BUILD CPU_STRESS
-cpu_stress: $(CPU_STRESS_OBJS)
-	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
-
-cpu_stress.o: $(CPU_STRESS_DEPS)
+$(OBJS_CPU_STRESS) : $(DEPS_CPU_STRESS)
 	$(CC) $(CFLAGS) -c $< -o $@
+# --------------------------------------------------------- 2}}}
 
-# BUILD EXERCISE 2
-2_consider: $(2CONSIDER_OBJS)
-	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
+# exercise2 ----------------------------------------------- {{{2
+exercise2 : $(OBJS_EXERCISE2)
+	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
-2_consider.o: $(2CONSIDER_DEPS)
+$(OBJS_EXERCISE2) : $(DEPS_EXERCISE2)
 	$(CC) $(CFLAGS) -c $< -o $@
+# --------------------------------------------------------- 2}}}
 
-# BUILD COUNT_WORDS
-count_words: $(COUNT_WORDS_OBJS)
-	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
+# count_words --------------------------------------------- {{{2
+count_words : $(OBJS_COUNT_WORDS)
+	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
-count_words.o: $(COUNT_WORDS_DEPS)
+$(OBJS_COUNT_WORDS) : $(DEPS_COUNT_WORDS)
 	$(CC) $(CFLAGS) -c $< -o $@
+# --------------------------------------------------------- 2}}}
 
-# BUILD EXERCISE 4
-4_consider: $(4CONSIDER_OBJS)
-	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
+# exercise4 ----------------------------------------------- {{{2
+exercise4 : $(OBJS_EXERCISE4)
+	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
-4_consider.o: $(4CONSIDER_DEPS)
+$(OBJS_EXERCISE4) : $(DEPS_EXERCISE4)
 	$(CC) $(CFLAGS) -c $< -o $@
-	
-# BUILD VECTOR_STAT_PROC
-vector_stat_proc: $(VECTOR_STAT_PROC_OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ $(EXTRAFLAGS)
+# --------------------------------------------------------- 2}}}
 
-vector_stat_proc.o: $(VECTOR_STAT_PROC_DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@
+# vector_stat_proc ---------------------------------------- {{{2
+vector_stat_proc : $(OBJS_VECTOR_STAT_PROC)
+	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
-utilities.o: $(UTILITIES_DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJECTS_DIR)/%.o : %.c
+	$(CC) $(CFLAGS) -c $< -o $@ 
+# --------------------------------------------------------- 2}}}
 
-# BUILD TESTFILE
-testfile: $(TESTFILE_OBJS)
-	$(CC) $(CFLAGS) $< -o $@ $(EXTRAFLAGS)
-
-testfile.o: $(TESTFILE_DEPS)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# CLEAN
+# clean --------------------------------------------------- {{{2
 clean:
-	rm -f *.o
-	rm -f cpu_stress
-	rm -f 2_consider
-	rm -f count_words
-	rm -f 4_consider
-	rm -f vector_stat_proc
-	rm -f testfile
+	rm -f $(OBJECTS_DIR)/*.o
+	rm -f $(TARGETS_DIR)/cpu_stress
+	rm -f $(TARGETS_DIR)/exercise2
+	rm -f $(TARGETS_DIR)/count_words
+	rm -f $(TARGETS_DIR)/exercise4
+	rm -f $(TARGETS_DIR)/vector_stat_proc
+# --------------------------------------------------------- 1}}}
+# --------------------------------------------------------- 2}}}
