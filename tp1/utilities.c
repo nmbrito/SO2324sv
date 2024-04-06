@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-// Custom
 #include "utilities.h"
 // ------------------------------------------------------------------------------------- // 1}}}
 
@@ -17,37 +16,21 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     long slices = v_sz / n_processes;                                                   // Number of sections splits in the array depending on number of processes
     long sliceLeftover = v_sz % n_processes;                                            // Store residue for further split calculations
 
-    int addLeftover = 0;                                                                // Aligns elements depending on residue
-    int moveLeftover = 0;                                                               // Aligns array forward move depending on residue
-
     long svCount[1] = {0};                                                              // Stores counted values written in sv array by child process
 
-    int *vAddress = v;                                                                  // Stores the original v address
-    //int *svAddress = sv;                                                                // Stores the original sv address
+    int *svAddress = sv;
+    sv = (int *) realloc(sv, sizeof(slices));
+    
+    int *pipesFDS = (int *) malloc(sizeof(int) * (PIPE_UNICHANNEL * n_processes));
+    if(pipesFDS == NULL) return -1;
+    int *pipesFDSAddress = pipesFDS;
 
-    //sv = realloc(sv, (sizeof(int) * slices));                                           // Instead of sending a sizeable array, send only the needed size
-
-    int *pipesFDS = createIntArrays(&pipesFDS, (n_processes * PIPE_UNICHANNEL));        // Create pipe array
-    int *pipesFDSAddress = pipesFDS;                                                    // Stores the original pipe address
-
-    for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)
+    for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)   // {{{3
     {
-        if(sliceLeftover > 0)                                                           // Array adjustment
-        {
-            addLeftover = 0;
-            moveLeftover = 1;
-            sliceLeftover--;
-        }
-        else
-        {
-            addLeftover = -1;
-            moveLeftover = 0;
-        }
 
         pipe(pipesFDS);                                                                 // Pipe creation for each child
 
         pid_t forker = fork();                                                          // Fork creation
-
         if(forker < CHILD)
         {
             perror("Error forking");
@@ -65,76 +48,34 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
                 }
             }
 
-            write(pipesFDS[WRITE], svCount, sizeof(long));                              // Send counted numbers to parent
-            write(pipesFDS[WRITE], sv, (sizeof(int) * svCount[0]));                     // Then write the subarray to parent
+            // TODO
 
-            close(pipesFDS[WRITE]);                                                     // After job done, close write pipe
+            close(pipesFDS[WRITE];
+            free(pipesFDS);
 
-            return CHILD_RETURN_SUCCESS;                                                // It cannot return 0, otherwise it'll be stuck in main
+            return CHILD_RETURN_SUCCESS;
         }
         else
         {
-            v = v + (slices+moveLeftover);                                              // Move to next slice address
-            pipesFDS = pipesFDS + PIPE_UNICHANNEL;                                      // Move to next pipe address
+
         }
-    }
+    }                                                                                   // 3}}}
 
-    long countNumber = 0;                                                               // Allows parent process to store counted values
-
-    pipesFDS = pipesFDSAddress;                                                         // Restores original pipesFDS address
-
-    //sv = realloc(sv, (sizeof(int) * v_sz));                                             // Restores subarray to full size
-
-    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Pipe reading
-    {
-        close(pipesFDS[WRITE]);                                                         // Parent will read only
-
-        read(pipesFDS[READ], svCount, sizeof(long));                                    // Read the counted valid numbers
-        read(pipesFDS[READ], sv, sizeof(int) * svCount[0]);                             // Read svCount[0] bytes of the subarray sent by child process
-
-        close(pipesFDS[READ]);                                                          // Close the read pipe
-
-        countNumber = countNumber + svCount[0];                                         // Sums the valid counted values to the previous read
-
-        sv = sv + svCount[0];                                                           // Align the array for the next read
-
-        pipesFDS = pipesFDS + PIPE_UNICHANNEL;                                          // Next pair os pipes
-    }
-
-    v = vAddress;                                                                       // Because the v array was moved around, restore the original address
-    //sv = svAddress;                                                                     // Because the subarray was moved around, restore the original address
-    //sv = realloc(sv, (sizeof(int) * countNumber));                                      // Resize the subvalues to the number of read valid values
+    long countNumbers = 0;
 
     for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
     {
         wait(NULL);
     }
 
-    pipesFDS = pipesFDSAddress;                                                         // Restores, yet again, the pipe address
-    free(pipesFDS);                                                                     // PipeFDS array was created in this function, array gets freed
+    free(pipesFDS);
 
-    return countNumber;
+    return countNumbers;
 }
 // ------------------------------------------------------------------------------------- // 2}}}
 // ------------------------------------------------------------------------------------- // 1}}}
 
 // CUSTOM FUNCTIONS -------------------------------------------------------------------- // {{{1
-// int *createIntArrays(int **array, long arrayDim); ----------------------------------- // {{{2
-int *createIntArrays(int **array, long arrayDim)
-{
-    printf("Initializing a vector of %ld bytes\n", arrayDim);
-
-    *array = (int *) malloc(sizeof(int) * arrayDim);
-    if (array == NULL)
-    {
-        fprintf(stderr, "Memory allocation error\n");
-        return ERROR_RETURN;
-        //exit(0); // Not yet
-    }
-
-    return *array;
-}
-// ------------------------------------------------------------------------------------- // 2}}}
 // ------------------------------------------------------------------------------------- // 1}}}
 
 // APOIOTP1 FUNCTIONS------------------------------------------------------------------- // {{{1
@@ -169,6 +110,7 @@ int vector_get_in_range_seq(int v[], int v_sz, int sv[], int min, int max)
 }
 
 // TODO
+/*
 void codeEval()
 {
     struct timeval t1,t2;
@@ -193,4 +135,5 @@ void codeEval()
 
     printf("Values between [%d..%d]: %ld\n", values_min, values_max, count);
 }
+*/
 // ------------------------------------------------------------------------------------- // 1}}}
