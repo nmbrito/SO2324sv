@@ -8,41 +8,40 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-// Custom
 #include "utilities.h"
-
 // -------------------------------------------------------------------------- // 1}}}
 
 // MAIN --------------------------------------------------------------------- // {{{1
 // argv[0] -> program name
-// argv[1] -> vector dimension
+// argv[1] -> array dimension
 // argv[2] -> number of processes
 int main(int argc, char *argv[])
 {
-
+    // Check arguments
     if(argc != 3)
     {
         printf("Syntax wrong. Usage: $ ./vector_stat_proc <vector dimension> <number processes>");
-
         return -1;
     }
-    
-    long arraySize = atoi(argv[1]);
+
+    long arraySize      = atoi(argv[1]);
     int numberProcesses = atoi(argv[2]);
 
     // Arrays
-    int *arrayValues = createIntArrays(&arrayValues, arraySize);
-    int *arraySubValues = createIntArrays(&arraySubValues, arraySize);
+    int *arrayValues = (int *) malloc(sizeof(int) * arraySize);
+    if(arrayValues == NULL) return -1;
 
-    // Give random numbers to array
+    int *arraySubValues = (int *) malloc(sizeof(int) * arraySize);
+    if(arraySubValues == NULL) return -1;
+
+    // Initiate array with random numbers
     vector_init_rand(arrayValues, arraySize, LOWER_LIMIT, MAXIMUM_LIMIT);
 
     // Call main function
     int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
-    if(count == CHILD_RETURN_SUCCESS) return 0; // So child doesn't slip to main
+    if(count == CHILD_RETURN_SUCCESS) return 0;
 
-    printf("Count: %d\n", count);
-
+    // Free arrays
     free(arrayValues);
     free(arraySubValues);
 
