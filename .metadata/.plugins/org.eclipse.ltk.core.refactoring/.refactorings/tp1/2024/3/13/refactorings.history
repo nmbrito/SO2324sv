@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;tp1/vectorstat/Makefile&apos; to &apos;Makefile_single&apos;" description="Rename resource &apos;Makefile&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="vectorstat/Makefile" name="Makefile_single" stamp="1711453987353" updateReferences="true"/>
-</session>
