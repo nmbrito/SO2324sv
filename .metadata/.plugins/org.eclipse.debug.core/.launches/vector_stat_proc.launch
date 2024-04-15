@@ -17,8 +17,8 @@
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
     <booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_ARGUMENTS" value="20 4"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="vector_stat_proc"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_ARGUMENTS" value="20 2"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="/Users/operador/Documents/gitrepositories/SO2324sv/tp1/targets/vector_stat_proc"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="tp1"/>
     <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="cdt.managedbuild.toolchain.gnu.base.699107158"/>
