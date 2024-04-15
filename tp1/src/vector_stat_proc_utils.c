@@ -38,17 +38,17 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         {
             close(pipesFDS[READ]);                                                      // Child will write only
 
-            for (long i = 0; i < (slices + addLeftover); i++)                           // Write valid values to array
-            {
-                if (v[i] >= min && v[i] <= max)
-                {
-                    sv[svCount[0]++] = v[i];
-                }
-            }
+            //for (long i = 0; i < (slices + addLeftover); i++)                           // Write valid values to array
+            //{
+            //    if (v[i] >= min && v[i] <= max)
+            //    {
+            //        sv[svCount[0]++] = v[i];
+            //    }
+            //}
 
             // TODO
 
-            close(pipesFDS[WRITE];
+            close(pipesFDS[WRITE]);
             free(pipesFDS);
 
             exit(0);
