@@ -21,42 +21,43 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     int *pipesFDS = (int *) malloc(sizeof(int) * (PIPE_UNICHANNEL * n_processes));
     if(pipesFDS == NULL) return -1;
 
+    int *pipesFDS_addr = pipesFDS;                                                        // Save pipesFDS original address
+
     for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)   // {{{3
     {
 
         pipe(pipesFDS);                                                                 // Pipe creation for each child
 
-        //pid_t forker = fork();                                                          // Fork creation
-        //if(forker < CHILD)
-        //{
-        //    perror("Error forking");
-        //    exit(-1);
-        //}
-        //else if(forker == CHILD)
-        //{
-        //    close(pipesFDS[READ]);                                                      // Child will write only
+        pid_t forker = fork();                                                          // Fork creation
+        if(forker < CHILD)
+        {
+            perror("Error forking");
+            exit(-1);
+        }
+        else if(forker == CHILD)
+        {
+            close(pipesFDS[READ]);                                                      // Child will write only
 
-        //    for (long i = 0; i < (slices + addLeftover); i++)                           // Write valid values to array
-        //    {
-        //        if (v[i] >= min && v[i] <= max)
-        //        {
-        //            sv[svCount[0]++] = v[i];
-        //        }
-        //    }
+            for (long i = 0; i < (slices + addLeftover); i++)                           // Write valid values to array
+            {
+                if (v[i] >= min && v[i] <= max)
+                {
+                    sv[svCount[0]++] = v[i];
+                }
+            }
 
-        //    // TODO
+            // TODO
 
-        //    close(pipesFDS[WRITE];
-        //    free(pipesFDS);
+            close(pipesFDS[WRITE];
+            free(pipesFDS);
 
-        //    exit(0);
-        //}
-        //else
-        //{
+            exit(0);
+        }
 
-        //}
+        pipesFDS += PIPE_UNICHANNEL;                                                    // Next pipe set
     }                                                                                   // 3}}}
 
+    pipesFDS = pipesFDS_addr;
     long countNumbers = 0;
 
     for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
