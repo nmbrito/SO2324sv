@@ -18,9 +18,9 @@
 	<section name="PropertyDialog.dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="0"/>
 		<item key="DIALOG_Y_ORIGIN" value="0"/>
-		<item key="DIALOG_WIDTH" value="801"/>
-		<item key="DIALOG_HEIGHT" value="668"/>
-		<item key="DIALOG_FONT_NAME" value="1|Noto Sans|10.0|0|GTK|1|"/>
+		<item key="DIALOG_WIDTH" value="838"/>
+		<item key="DIALOG_HEIGHT" value="714"/>
+		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
 	</section>
 	<section name="ImportExportAction">
 		<item key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID" value="org.eclipse.ui.wizards.import.ExternalProject"/>
