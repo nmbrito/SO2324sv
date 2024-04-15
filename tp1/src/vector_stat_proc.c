@@ -8,7 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "utilities.h"
+#include "vector_stat_proc_utils.h"
 // -------------------------------------------------------------------------- // 1}}}
 
 // MAIN --------------------------------------------------------------------- // {{{1
@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
 
     // Call main function
     int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
-    if(count == CHILD_RETURN_SUCCESS) return 0;
 
     // Free arrays
     free(arrayValues);
