@@ -4,6 +4,9 @@
 # Eclipse
 **/.metadata/
 
+# Targets
+**/targets/
+
 # C compiled object files
 *.o
 
