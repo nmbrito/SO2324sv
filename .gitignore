@@ -2,7 +2,7 @@
 **/.DS_Store
 
 # Eclipse
-**/.metadata
+**/.metadata/
 
 # C compiled object files
 *.o
