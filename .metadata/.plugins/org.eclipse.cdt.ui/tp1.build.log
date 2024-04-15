@@ -1,6 +1,10 @@
-22:52:56 **** Incremental Build of configuration Default for project tp1 ****
+16:30:12 **** Incremental Build of configuration Default for project tp1 ****
 make all 
-make: Nothing to be done for 'all'.
+gcc -Wall -g .objects/cpu_stress.o -o ./targets/cpu_stress -lm
+gcc -Wall -g .objects/exercise2.o -o ./targets/exercise2 -lm
+gcc -Wall -g .objects/count_words.o -o ./targets/count_words -lm
+gcc -Wall -g .objects/exercise4.o -o ./targets/exercise4 -lm
+gcc -Wall -g .objects/vector_stat_proc.o .objects/vector_stat_proc_utils.o -o ./targets/vector_stat_proc -lm
 
-22:52:57 Build Finished. 0 errors, 0 warnings. (took 388ms)
+16:30:13 Build Finished. 0 errors, 0 warnings. (took 650ms)
 
