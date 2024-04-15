@@ -1,59 +1,11 @@
-16:21:00 **** Build of configuration Default for project tp1 ****
-make vector_stat_proc 
-gcc -Wall -g -c src/vector_stat_proc.c -o .objects/vector_stat_proc.o
-src/vector_stat_proc.c:41:9: warning: unused variable 'count' [-Wunused-variable]
-    int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
-        ^
-1 warning generated.
-gcc -Wall -g -c src/vector_stat_proc_utils.c -o .objects/vector_stat_proc_utils.o
-src/vector_stat_proc_utils.c:16:10: warning: unused variable 'slices' [-Wunused-variable]
-    long slices = v_sz / n_processes;                                                   // Number of sections splits in the array depending on number of processes
-         ^
-src/vector_stat_proc_utils.c:17:10: warning: unused variable 'sliceLeftover' [-Wunused-variable]
-    long sliceLeftover = v_sz % n_processes;                                            // Store residue for further split calculations
-         ^
-src/vector_stat_proc_utils.c:19:10: warning: unused variable 'svCount' [-Wunused-variable]
-    long svCount[1] = {0};                                                              // Stores counted values written in sv array by child process
-         ^
-3 warnings generated.
-gcc -Wall -g .objects/vector_stat_proc.o .objects/vector_stat_proc_utils.o -o ./targets/vector_stat_proc -lm
-16:21:05 **** Incremental Build of configuration Default for project tp1 ****
-make all 
-gcc -Wall -g -c src/cpu_stress.c -o .objects/cpu_stress.o
-src/cpu_stress.c:18:9: warning: ignoring return value of function declared with const attribute [-Wunused-value]
-        sqrt(rand());
-        ^~~~ ~~~~~~
-1 warning generated.
-gcc -Wall -g .objects/cpu_stress.o -o ./targets/cpu_stress -lm
-gcc -Wall -g -c src/exercise2.c -o .objects/exercise2.o
-gcc -Wall -g .objects/exercise2.o -o ./targets/exercise2 -lm
-gcc -Wall -g -c src/count_words.c -o .objects/count_words.o
-gcc -Wall -g .objects/count_words.o -o ./targets/count_words -lm
-gcc -Wall -g -c src/exercise4.c -o .objects/exercise4.o
-gcc -Wall -g .objects/exercise4.o -o ./targets/exercise4 -lm
-gcc -Wall -g .objects/vector_stat_proc.o .objects/vector_stat_proc_utils.o -o ./targets/vector_stat_proc -lm
-16:21:13 **** Incremental Build of configuration Default for project tp1 ****
+16:36:06 **** Incremental Build of configuration Default for project tp1 ****
 make all 
 gcc -Wall -g .objects/cpu_stress.o -o ./targets/cpu_stress -lm
 gcc -Wall -g .objects/exercise2.o -o ./targets/exercise2 -lm
 gcc -Wall -g .objects/count_words.o -o ./targets/count_words -lm
 gcc -Wall -g .objects/exercise4.o -o ./targets/exercise4 -lm
 gcc -Wall -g .objects/vector_stat_proc.o .objects/vector_stat_proc_utils.o -o ./targets/vector_stat_proc -lm
-16:21:24 **** Incremental Build of configuration Default for project tp1 ****
-make all 
-gcc -Wall -g .objects/cpu_stress.o -o ./targets/cpu_stress -lm
-gcc -Wall -g .objects/exercise2.o -o ./targets/exercise2 -lm
-gcc -Wall -g .objects/count_words.o -o ./targets/count_words -lm
-gcc -Wall -g .objects/exercise4.o -o ./targets/exercise4 -lm
-gcc -Wall -g .objects/vector_stat_proc.o .objects/vector_stat_proc_utils.o -o ./targets/vector_stat_proc -lm
-16:23:34 **** Incremental Build of configuration Default for project tp1 ****
-make all 
-gcc -Wall -g .objects/cpu_stress.o -o ./targets/cpu_stress -lm
-gcc -Wall -g .objects/exercise2.o -o ./targets/exercise2 -lm
-gcc -Wall -g .objects/count_words.o -o ./targets/count_words -lm
-gcc -Wall -g .objects/exercise4.o -o ./targets/exercise4 -lm
-gcc -Wall -g .objects/vector_stat_proc.o .objects/vector_stat_proc_utils.o -o ./targets/vector_stat_proc -lm
-16:30:12 **** Incremental Build of configuration Default for project tp1 ****
+16:36:17 **** Incremental Build of configuration Default for project tp1 ****
 make all 
 gcc -Wall -g .objects/cpu_stress.o -o ./targets/cpu_stress -lm
 gcc -Wall -g .objects/exercise2.o -o ./targets/exercise2 -lm
