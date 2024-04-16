@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
     // Call main function
     int count = vector_get_in_range(arrayValues, arraySize, arraySubValues, LOWER_LIMIT, UPPER_LIMIT, numberProcesses);
 
+    printf("Counted %d valid numbers", count);
+
     // Free arrays
     free(arrayValues);
     free(arraySubValues);
