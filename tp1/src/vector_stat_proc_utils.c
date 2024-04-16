@@ -18,19 +18,18 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     long sliceAddLeftover = 0;                                                          // Variable that accounts an element leftover
     long sliceIndexIni = 0;                                                             // [0, x[
     long sliceIndexEnd = 0;                                                             // [x, y[
-
     long svCount[1] = {0};                                                              // Stores counted values written in sv array by child process
-
     int pipeIndex = 0;
+
     int *pipesFDS = (int *) malloc(sizeof(int) * (PIPE_UNICHANNEL * n_processes));      // Create pipe array
     if(pipesFDS == NULL) return -1;
 
-    sv = (int *) realloc(sv, sizeof(int) * (slices+1));                                                 // Resize subarray for children
-    if(sv == NULL) return -1;
+    //sv = (int *) realloc(sv, sizeof(int) * (slices+1));                                 // Resize subarray for children
+    //if(sv == NULL) return -1;
 
     for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)   // {{{3
     {
-        if(sliceLeftover > 0)
+        if(sliceLeftover > 0)                                                           // If there is a remainder, it must be added to slice
         {
             sliceAddLeftover = 1;
             sliceLeftover--;
@@ -40,9 +39,9 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
             sliceAddLeftover = 0;
         }
 
-        sliceIndexEnd = sliceIndexEnd + slices + sliceAddLeftover;
-
+        sliceIndexEnd = sliceIndexEnd + slices + sliceAddLeftover;                      // Array ending index, if there is a remainder, add it
             //DEBUG ----------------------------------------------------
+                printf("Slices : %ld\n", slices);
                 printf("Sending initial index: %ld\n", sliceIndexIni);
                 printf("Sending ending index: %ld\n", sliceIndexEnd);
             // ---------------------------------------------------------
@@ -67,7 +66,6 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
                     sv[svCount[0]++] = v[sliceIndexIni];
                 }
             }
-
             //DEBUG ----------------------------------------------------
                 printf("Child %d numbers: ", getpid());
                 for(long i = 0; i < svCount[0]; i++)
@@ -77,27 +75,29 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
                 printf("\n");
             // ---------------------------------------------------------
 
-            write(pipesFDS[pipeIndex+1], svCount, sizeof(long));
-            write(pipesFDS[pipeIndex+1], sv, sizeof(long) * svCount[0]);
+            write(pipesFDS[pipeIndex+1], svCount, sizeof(long));                        // Write counted value
+            write(pipesFDS[pipeIndex+1], sv, sizeof(long) * svCount[0]);                // Write valid numbers
 
             //DEBUG ----------------------------------------------------
                 printf("Count child %d: %ld\n\n", getpid(), svCount[0]);
             // ---------------------------------------------------------
 
             close(pipesFDS[pipeIndex+1]);                                               // Close read channel (1)
+
             free(pipesFDS);
+            //free(sv);
 
             exit(0);
         }
 
-        sliceIndexIni = sliceIndexEnd;
+        sliceIndexIni = sliceIndexEnd;                                                  // Adjust subarray next beginning
         pipeIndex += PIPE_UNICHANNEL;                                                   // Next pipe set
     }                                                                                   // 3}}}
 
     long sumOfsvCount = 0;
 
-    sv = (int *) realloc(sv, sizeof(int) * v_sz);
-    if(sv == NULL) return -1;
+    //sv = (int *) realloc(sv, sizeof(int) * v_sz);                                       // Resize subarray to max value
+    //if(sv == NULL) return -1;
 
             //DEBUG ----------------------------------------------------
                 long i = 0;
@@ -107,17 +107,14 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     {
         //TODO: Safe read
         close(pipesFDS[pipeIndex+1]);                                                   // Close read channel (1)
-                                                                                        //
-        read(pipesFDS[pipeIndex], svCount, sizeof(long));
 
+        read(pipesFDS[pipeIndex], svCount, sizeof(long));
             //DEBUG ----------------------------------------------------
                 printf("Parent count read: %ld\n", svCount[0]);
             // ---------------------------------------------------------
-
         read(pipesFDS[pipeIndex], &sv[sumOfsvCount], sizeof(int) * svCount[0]);
 
         sumOfsvCount = sumOfsvCount + svCount[0];
-
             //DEBUG ----------------------------------------------------
                 printf("\n\nPipe %d read: ", pipeIndex);
                 for(; i < sumOfsvCount; i++)
@@ -131,11 +128,13 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         close(pipesFDS[pipeIndex]);                                                     // Close write channel (0)
     }
 
-    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
+    for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Wait for children
     {
         wait(NULL);
     }
 
+    sv = (int *) realloc(sv, sizeof(int) * sumOfsvCount);                               // Resize subarray to max value
+    if(sv == NULL) return -1;
             //DEBUG ----------------------------------------------------
                 printf("\n\nFinal subarray values: ");
                 for(long i = 0; i < sumOfsvCount; i++)
