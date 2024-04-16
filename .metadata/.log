@@ -3352,3 +3352,122 @@ java.lang.ClassNotFoundException: org.eclipse.e4.ui.workbench.renderers.swt.coco
 
 !ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 14:49:08.918
 !MESSAGE Addressable size was never initialized for gdb[48].proc[30922].threadGroup[i3]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:13:56.068
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3596].threadGroup[i2]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:00.942
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3639].threadGroup[i3]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:04.117
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3664].threadGroup[i4]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:06.974
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3684].threadGroup[i5]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:09.886
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3705].threadGroup[i6]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:12.485
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3725].threadGroup[i7]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:15.241
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3768].threadGroup[i8]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:17.945
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3788].threadGroup[i9]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:35.655
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3835].threadGroup[i10]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:42.197
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3860].threadGroup[i11]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:45.182
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3903].threadGroup[i12]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:48.221
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3923].threadGroup[i13]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:51.717
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3944].threadGroup[i14]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:54.696
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3964].threadGroup[i15]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:14:57.410
+!MESSAGE Addressable size was never initialized for gdb[53].proc[3987].threadGroup[i16]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:22.761
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5976].threadGroup[i2]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:23.935
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5979].threadGroup[i3]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:24.796
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5982].threadGroup[i4]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:25.624
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5985].threadGroup[i5]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:26.354
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5988].threadGroup[i6]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:26.849
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5991].threadGroup[i7]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:27.338
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5994].threadGroup[i8]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:22:28.046
+!MESSAGE Addressable size was never initialized for gdb[61].proc[5997].threadGroup[i9]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:29:51.502
+!MESSAGE Addressable size was never initialized for gdb[66].proc[7408].threadGroup[i2]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:29:53.829
+!MESSAGE Addressable size was never initialized for gdb[66].proc[7411].threadGroup[i3]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:35:59.924
+!MESSAGE Addressable size was never initialized for gdb[69].proc[8600].threadGroup[i2]
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 0 2024-04-16 15:36:16.270
+!MESSAGE Addressable size was never initialized for gdb[69].proc[8653].threadGroup[i3]
+!SESSION 2024-04-16 16:29:15.337 -----------------------------------------------
+eclipse.buildId=4.31.0.20240307-1200
+java.version=21.0.2
+java.vendor=N/A
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.e4.ui.workbench 4 0 2024-04-16 16:29:35.100
+!MESSAGE Unable to load class 'org.eclipse.e4.ui.workbench.renderers.swt.cocoa.CocoaUIHandler' from bundle '197'
+!STACK 0
+java.lang.ClassNotFoundException: org.eclipse.e4.ui.workbench.renderers.swt.cocoa.CocoaUIHandler cannot be found by org.eclipse.e4.ui.workbench.renderers.swt_0.16.300.v20240223-1002
+	at org.eclipse.osgi.internal.loader.BundleLoader.generateException(BundleLoader.java:562)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass0(BundleLoader.java:557)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:434)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:174)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.loadClass(EquinoxBundle.java:643)
+	at org.eclipse.e4.ui.internal.workbench.ReflectionContributionFactory.createFromBundle(ReflectionContributionFactory.java:88)
+	at org.eclipse.e4.ui.internal.workbench.ReflectionContributionFactory.doCreate(ReflectionContributionFactory.java:59)
+	at org.eclipse.e4.ui.internal.workbench.ReflectionContributionFactory.create(ReflectionContributionFactory.java:37)
+	at org.eclipse.e4.ui.internal.workbench.swt.E4Application.createE4Workbench(E4Application.java:273)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:568)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:546)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:173)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:143)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:109)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:439)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:271)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:651)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:588)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1459)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1432)
