@@ -15,18 +15,40 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
 {
     long slices = v_sz / n_processes;                                                   // Number of sections splits in the array depending on number of processes
     long sliceLeftover = v_sz % n_processes;                                            // Store residue for further split calculations
+    long sliceAddLeftover = 0;                                                          // Variable that accounts an element leftover
+    long sliceIndexIni = 0;                                                             // [0, x[
+    long sliceIndexEnd = 0;                                                             // [x, y[
 
     long svCount[1] = {0};                                                              // Stores counted values written in sv array by child process
 
-    int *pipesFDS = (int *) malloc(sizeof(int) * (PIPE_UNICHANNEL * n_processes));
+    int pipeIndex = 0;
+    int *pipesFDS = (int *) malloc(sizeof(int) * (PIPE_UNICHANNEL * n_processes));      // Create pipe array
     if(pipesFDS == NULL) return -1;
 
-    int *pipesFDS_addr = pipesFDS;                                                        // Save pipesFDS original address
+    sv = (int *) realloc(sv, slices+1);                                                 // Resize subarray for children
+
+            //DEBUG --------------------------------------------------
+                printf("Count parent initial: %ld\n", svCount[0]);
 
     for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)   // {{{3
     {
+        if(sliceLeftover > 0)
+        {
+            sliceAddLeftover = 1;
+            sliceLeftover--;
+        }
+        else
+        {
+            sliceAddLeftover = 0;
+        }
 
-        pipe(pipesFDS);                                                                 // Pipe creation for each child
+        sliceIndexEnd = sliceIndexEnd + slices + sliceAddLeftover;
+
+            //DEBUG --------------------------------------------------
+                printf("Sending initial index: %ld\n", sliceIndexIni);
+                printf("Sending ending index: %ld\n", sliceIndexEnd);
+
+        pipe(pipesFDS+pipeIndex);                                                       // Pipe creation for each child
 
         pid_t forker = fork();                                                          // Fork creation
         if(forker < CHILD)
@@ -36,29 +58,46 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         }
         else if(forker == CHILD)
         {
-            close(pipesFDS[READ]);                                                      // Child will write only
+            close(pipesFDS[pipeIndex]);                                                 // Close write channel (0)
 
-            //for (long i = 0; i < (slices + addLeftover); i++)                           // Write valid values to array
-            //{
-            //    if (v[i] >= min && v[i] <= max)
-            //    {
-            //        sv[svCount[0]++] = v[i];
-            //    }
-            //}
+            for(; sliceIndexIni < sliceIndexEnd ; sliceIndexIni++)                      // Write valid values to array
+            {
+                if(v[sliceIndexIni] >= min && v[sliceIndexIni] <= max)
+                {
+                    sv[svCount[0]++] = v[sliceIndexIni];
+                }
+            }
+            write();
+            write();
 
-            // TODO
+            //DEBUG --------------------------------------------------
+                printf("Count child %d: %ld\n", getpid(), svCount[0]);
 
-            close(pipesFDS[WRITE]);
+            close(pipesFDS[pipeIndex+1]);                                               // Close read channel (1)
             free(pipesFDS);
 
             exit(0);
         }
 
-        pipesFDS += PIPE_UNICHANNEL;                                                    // Next pipe set
+        sliceIndexIni = sliceIndexEnd;
+        pipeIndex += PIPE_UNICHANNEL;                                                   // Next pipe set
     }                                                                                   // 3}}}
+            //DEBUG --------------------------------------------------
+                printf("Count parent end: %ld\n", svCount[0]);
 
-    pipesFDS = pipesFDS_addr;
+    sv = (int *) realloc(sv, v_sz);
+
     long countNumbers = 0;
+
+    for(; pipeIndex < (n_processes * PIPE_UNICHANNEL); pipeIndex += PIPE_UNICHANNEL)
+    {
+        close(pipesFDS[pipeIndex+1]);                                                   // Close read channel (1)
+        //TODO
+        //read();
+        //read();
+
+        close(pipesFDS[pipeIndex]);                                                     // Close write channel (0)
+    }
 
     for(int closeProcesses = 0; closeProcesses < n_processes; closeProcesses++)         // Waits for children
     {
