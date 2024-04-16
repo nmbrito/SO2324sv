@@ -25,10 +25,8 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
     int *pipesFDS = (int *) malloc(sizeof(int) * (PIPE_UNICHANNEL * n_processes));      // Create pipe array
     if(pipesFDS == NULL) return -1;
 
-    sv = (int *) realloc(sv, slices+1);                                                 // Resize subarray for children
-
-            //DEBUG --------------------------------------------------
-                printf("Count parent initial: %ld\n", svCount[0]);
+    sv = (int *) realloc(sv, sizeof(int) * (slices+1));                                                 // Resize subarray for children
+    if(sv == NULL) return -1;
 
     for(int ongoingProcesses = 0; ongoingProcesses < n_processes; ongoingProcesses++)   // {{{3
     {
@@ -44,9 +42,10 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
 
         sliceIndexEnd = sliceIndexEnd + slices + sliceAddLeftover;
 
-            //DEBUG --------------------------------------------------
+            //DEBUG ----------------------------------------------------
                 printf("Sending initial index: %ld\n", sliceIndexIni);
                 printf("Sending ending index: %ld\n", sliceIndexEnd);
+            // ---------------------------------------------------------
 
         pipe(pipesFDS+pipeIndex);                                                       // Pipe creation for each child
 
@@ -58,6 +57,7 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         }
         else if(forker == CHILD)
         {
+            //TODO: Safe write
             close(pipesFDS[pipeIndex]);                                                 // Close write channel (0)
 
             for(; sliceIndexIni < sliceIndexEnd ; sliceIndexIni++)                      // Write valid values to array
@@ -67,11 +67,22 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
                     sv[svCount[0]++] = v[sliceIndexIni];
                 }
             }
-            write();
-            write();
 
-            //DEBUG --------------------------------------------------
-                printf("Count child %d: %ld\n", getpid(), svCount[0]);
+            //DEBUG ----------------------------------------------------
+                printf("Child %d numbers: ", getpid());
+                for(long i = 0; i < svCount[0]; i++)
+                {
+                    printf("%d ", sv[i]);
+                }
+                printf("\n");
+            // ---------------------------------------------------------
+
+            write(pipesFDS[pipeIndex+1], svCount, sizeof(long));
+            write(pipesFDS[pipeIndex+1], sv, sizeof(long) * svCount[0]);
+
+            //DEBUG ----------------------------------------------------
+                printf("Count child %d: %ld\n\n", getpid(), svCount[0]);
+            // ---------------------------------------------------------
 
             close(pipesFDS[pipeIndex+1]);                                               // Close read channel (1)
             free(pipesFDS);
@@ -82,19 +93,40 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         sliceIndexIni = sliceIndexEnd;
         pipeIndex += PIPE_UNICHANNEL;                                                   // Next pipe set
     }                                                                                   // 3}}}
-            //DEBUG --------------------------------------------------
-                printf("Count parent end: %ld\n", svCount[0]);
 
-    sv = (int *) realloc(sv, v_sz);
+    long sumOfsvCount = 0;
 
-    long countNumbers = 0;
+    sv = (int *) realloc(sv, sizeof(int) * v_sz);
+    if(sv == NULL) return -1;
 
-    for(; pipeIndex < (n_processes * PIPE_UNICHANNEL); pipeIndex += PIPE_UNICHANNEL)
+            //DEBUG ----------------------------------------------------
+                long i = 0;
+            // ---------------------------------------------------------
+
+    for(pipeIndex = 0; pipeIndex < (n_processes * PIPE_UNICHANNEL); pipeIndex += PIPE_UNICHANNEL)
     {
+        //TODO: Safe read
         close(pipesFDS[pipeIndex+1]);                                                   // Close read channel (1)
-        //TODO
-        //read();
-        //read();
+                                                                                        //
+        read(pipesFDS[pipeIndex], svCount, sizeof(long));
+
+            //DEBUG ----------------------------------------------------
+                printf("Parent count read: %ld\n", svCount[0]);
+            // ---------------------------------------------------------
+
+        read(pipesFDS[pipeIndex], &sv[sumOfsvCount], sizeof(int) * svCount[0]);
+
+        sumOfsvCount = sumOfsvCount + svCount[0];
+
+            //DEBUG ----------------------------------------------------
+                printf("\n\nPipe %d read: ", pipeIndex);
+                for(; i < sumOfsvCount; i++)
+                {
+                    printf("%d ", sv[i]);
+                }
+                i = sumOfsvCount;
+                printf("\n");
+            // ---------------------------------------------------------
 
         close(pipesFDS[pipeIndex]);                                                     // Close write channel (0)
     }
@@ -104,9 +136,19 @@ int vector_get_in_range(int v[], int v_sz, int sv[], int min, int max, int n_pro
         wait(NULL);
     }
 
+            //DEBUG ----------------------------------------------------
+                printf("\n\nFinal subarray values: ");
+                for(long i = 0; i < sumOfsvCount; i++)
+                {
+                    printf("%d ", sv[i]);
+                }
+                printf("\n");
+                printf("Returning a total sum of: %ld\n", sumOfsvCount);
+            // ---------------------------------------------------------
+
     free(pipesFDS);
 
-    return countNumbers;
+    return sumOfsvCount;
 }
 // ------------------------------------------------------------------------------------- // 2}}}
 // ------------------------------------------------------------------------------------- // 1}}}
