@@ -7,11 +7,7 @@
 #define MAXIMUM_LIMIT           200
 // Custom macros
 #define CHILD                   0
-#define READ                    0
-#define WRITE                   1
 #define PIPE_UNICHANNEL         2
-#define ERROR_RETURN            -1
-#define CHILD_RETURN_SUCCESS    -2
 // -------------------------------------------------------------------------- // 1}}}
 
 // FUNCTIONS ---------------------------------------------------------------- // {{{1
