@@ -10,11 +10,10 @@
 // -------------------------------------------------------------------------- // 1}}}
 
 // MACROS ------------------------------------------------------------------- // {{{1
-#define BUFSIZE 15000
+#define BUFSIZE 128
 #define CHILD   0
 // -------------------------------------------------------------------------- // 1}}}
 
-//TODO: buffer size very limited... must be the same size as lscpu
 int main(int argc, char *argv[])
 {
     int pipes[2];
@@ -25,29 +24,39 @@ int main(int argc, char *argv[])
     {
         char *countArguments[2];
 
-        countArguments[0] = strdup("lscpu");    // program: wc
-        countArguments[1] = NULL;               // mark end of array
+        countArguments[0] = strdup("lscpu");        // program: lscpu
+        countArguments[1] = NULL;                   // mark end of array
 
-        dup2(pipes[1], STDOUT_FILENO);
+        close(pipes[0]);                            // close read channel
 
-        execvp(countArguments[0], countArguments);
+        dup2(pipes[1], STDOUT_FILENO);              // redirect standard output to pipe write channel
+
+        execvp(countArguments[0], countArguments);  // exec lscpu
+        perror("exec error");
 
         exit(0);
     }
-
-    //char *buf = (char *) malloc(sizeof(char) * strlen(pipes[0]);
-    char buf[BUFSIZE];
-
-    read(pipes[0], buf, sizeof(char) * BUFSIZE);
-
-    for(int i = 0; i < BUFSIZE; i++)
+    else
     {
-        buf[i] = toupper(buf[i]);
+        char buf[BUFSIZE];  // store buffer
+        int byteCount = 0;  // initiate a counter
+
+        close(pipes[1]);    // close write pipe
+
+        do
+        {
+            byteCount = read(pipes[0], buf, sizeof(char) * BUFSIZE);    // count the number of read bytes and store in buf
+            for(int i = 0; i < byteCount; i++)
+            {
+                buf[i] = toupper(buf[i]);                               // upper case each char
+            }
+
+            write(STDOUT_FILENO, buf, byteCount);                       // write it out
+
+        }while(byteCount > 0);
+
+        wait(NULL);
+
+        return 0;
     }
-
-    write(1, buf, BUFSIZE);
-
-    wait(NULL);
-
-    return 0;
 }
