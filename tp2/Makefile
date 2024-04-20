@@ -20,36 +20,36 @@ OBJECTS_DIR = ./.objects
 TARGETS_DIR = ./targets
 
 # Objects (.o)
-OBJS_EXERCISE1			 = $(OBJECTS_DIR)/exercise1.o
-OBJS_CPU_STRESS			 = $(OBJECTS_DIR)/cpu_stress.o
-OBJS_VECTOR_STAT_PROC    = $(OBJECTS_DIR)/vector_stat_proc.o
-OBJS_VECTOR_STAT_PROC   += $(OBJECTS_DIR)/vector_stat_proc-utils.o
-OBJS_VECTOR_STAT_SERVER  = $(OBJECTS_DIR)/vector_stat_server.o
-OBJS_VECTOR_STAT_SERVER	+= $(OBJECTS_DIR)/vector_stat_server-utils.o
-OBJS_EXERCISE7			 = $(OBJECTS_DIR)/exercise7.o
+OBJS_CPU_INFO 			 	 = $(OBJECTS_DIR)/cpu_info.o
+OBJS_CPU_STRESS_THREADS		 = $(OBJECTS_DIR)/cpu_stress_threads.o
+OBJS_VECTOR_STAT_PROC   	 = $(OBJECTS_DIR)/vector_stat_proc.o
+OBJS_VECTOR_STAT_PROC   	+= $(OBJECTS_DIR)/vector_stat_proc-utils.o
+OBJS_VECTOR_STAT_SERVER 	 = $(OBJECTS_DIR)/vector_stat_server.o
+OBJS_VECTOR_STAT_SERVER		+= $(OBJECTS_DIR)/vector_stat_server-utils.o
+OBJS_EXERCISE7				 = $(OBJECTS_DIR)/exercise7.o
 
 # Dependencies (.c)
-DEPS_EXERCISE1			 = $(SOURCES_DIR)/exercise1.c
-DEPS_CPU_STRESS			 = $(SOURCES_DIR)/cpu_stress.c
-DEPS_VECTOR_STAT_PROC    = $(SOURCES_DIR)/vector_stat_proc.c
-DEPS_VECTOR_STAT_PROC   += $(SOURCES_DIR)/vector_stat_proc-utils.c
-DEPS_VECTOR_STAT_SERVER  = $(SOURCES_DIR)/vector_stat_server.c
-DEPS_VECTOR_STAT_SERVER	+= $(SOURCES_DIR)/vector_stat_server-utils.c
-DEPS_EXERCISE7			 = $(SOURCES_DIR)/exercise7.c
+DEPS_CPU_INFO 				 = $(SOURCES_DIR)/cpu_info.c
+DEPS_CPU_STRESS_THREADS		 = $(SOURCES_DIR)/cpu_stress_threads.c
+DEPS_VECTOR_STAT_PROC   	 = $(SOURCES_DIR)/vector_stat_proc.c
+DEPS_VECTOR_STAT_PROC   	+= $(SOURCES_DIR)/vector_stat_proc-utils.c
+DEPS_VECTOR_STAT_SERVER 	 = $(SOURCES_DIR)/vector_stat_server.c
+DEPS_VECTOR_STAT_SERVER		+= $(SOURCES_DIR)/vector_stat_server-utils.c
+DEPS_EXERCISE7				 = $(SOURCES_DIR)/exercise7.c
 
 # Rules - DON'T CHANGE -------------------------------------{{{1
 all: exercise1 cpu_stress vector_stat_proc vector_stat_server exercise7
 
-# exercise1 ----------------------------------------------- {{{2
-exercise1 : $(OBJS_EXERCISE1)
+# cpu_info ------------------------------------------------ {{{2
+cpu_info : $(OBJS_CPU_INFO)
 	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
 $(OBJECTS_DIR)/%.o : $(SOURCES_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 # --------------------------------------------------------- 2}}}
 
-# cpu_stress ---------------------------------------------- {{{2
-cpu_stress : $(OBJS_CPU_STRESS)
+# cpu_stress_threads -------------------------------------- {{{2
+cpu_stress_threads : $(OBJS_CPU_STRESS_THREADS)
 	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
 $(OBJECTS_DIR)/%.o : $(SOURCES_DIR)/%.c
