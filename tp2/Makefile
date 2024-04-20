@@ -38,7 +38,7 @@ DEPS_VECTOR_STAT_SERVER		+= $(SOURCES_DIR)/vector_stat_server-utils.c
 DEPS_EXERCISE7				 = $(SOURCES_DIR)/exercise7.c
 
 # Rules - DON'T CHANGE -------------------------------------{{{1
-all: exercise1 cpu_stress vector_stat_proc vector_stat_server exercise7
+all: cpu_info cpu_stress_threads vector_stat_proc vector_stat_server exercise7
 
 # cpu_info ------------------------------------------------ {{{2
 cpu_info : $(OBJS_CPU_INFO)
