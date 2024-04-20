@@ -40,7 +40,7 @@ DEPS_VECTOR_STAT_PROC  = $(SOURCES_DIR)/vector_stat_proc.c
 DEPS_VECTOR_STAT_PROC += $(SOURCES_DIR)/vector_stat_proc_utils.c
 
 # Rules - DON'T CHANGE -------------------------------------{{{1
-all: cpu_stress exercise2 count_words exercise4 vector_stat_proc
+all: createdir cpu_stress exercise2 count_words exercise4 vector_stat_proc
 
 # cpu_stress ---------------------------------------------- {{{2
 cpu_stress : $(OBJS_CPU_STRESS)
