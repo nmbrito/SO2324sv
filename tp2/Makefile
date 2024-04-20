@@ -19,6 +19,10 @@ SOURCES_DIR = ./src
 OBJECTS_DIR = ./.objects
 TARGETS_DIR = ./targets
 
+# Make directories
+MD		 = mkdir
+MDFLAGS	+= -p
+
 # Objects (.o)
 OBJS_CPU_INFO 			 	 = $(OBJECTS_DIR)/cpu_info.o
 OBJS_CPU_STRESS_THREADS		 = $(OBJECTS_DIR)/cpu_stress_threads.o
@@ -38,7 +42,7 @@ DEPS_VECTOR_STAT_SERVER		+= $(SOURCES_DIR)/vector_stat_server-utils.c
 DEPS_EXERCISE7				 = $(SOURCES_DIR)/exercise7.c
 
 # Rules - DON'T CHANGE -------------------------------------{{{1
-all: cpu_info cpu_stress_threads vector_stat_proc vector_stat_server exercise7
+all: createdir cpu_info cpu_stress_threads vector_stat_proc vector_stat_server exercise7
 
 # cpu_info ------------------------------------------------ {{{2
 cpu_info : $(OBJS_CPU_INFO)
@@ -78,6 +82,12 @@ exercise7 : $(OBJS_EXERCISE7)
 
 $(OBJECTS_DIR)/%.o : $(SOURCES_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
+# --------------------------------------------------------- 2}}}
+
+# make directories ---------------------------------------- {{{2
+createdir:
+	$(MD) $(MDFLAGS) $(OBJECTS_DIR)
+	$(MD) $(MDFLAGS) $(TARGETS_DIR)
 # --------------------------------------------------------- 2}}}
 
 # clean --------------------------------------------------- {{{2
