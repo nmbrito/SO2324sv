@@ -3675,3 +3675,8 @@ java.lang.ClassNotFoundException: org.eclipse.e4.ui.workbench.renderers.swt.coco
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:588)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1459)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1432)
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2024-04-20 17:08:02.195
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.mi.service.MIRunControl$9@3c1cc7fd): Status ERROR: org.eclipse.cdt.dsf.gdb code=10001 Context cannot be suspended.' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10001 2024-04-20 17:08:02.196
+!MESSAGE Context cannot be suspended.
