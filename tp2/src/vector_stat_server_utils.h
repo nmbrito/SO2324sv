@@ -8,6 +8,10 @@
 #define CHILD                   0
 #define PIPE_UNICHANNEL         2
 #define MAXIMUM_LIMIT           200
+
+#define BUFFER_SIZE (128)
+#define SERVER_ADDR ("127.0.0.1")
+#define SERVER_PORT (4533)
 // -------------------------------------------------------------------------- // 1}}}
 
 int tcp_socket_server_init (int serverPort);                // From iohelpers
