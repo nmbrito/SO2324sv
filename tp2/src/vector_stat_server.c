@@ -37,6 +37,11 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    // if t
+
+    // if p
+
+    int socket = tcp_socket_server_init(
 
     return 0;
 }
