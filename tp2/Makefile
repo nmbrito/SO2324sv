@@ -9,40 +9,44 @@
 # Compiler settings
 # -Wall		verbose compiler warnings
 # -g		compile with debug information
-CC		    = gcc
-CFLAGS	    = -Wall
-CFLAGS	   += -g
-EXTRAFLAGS  = -lm
+CC				= gcc
+CFLAGS			= -Wall
+CFLAGS			+= -g
+EXTRAFLAGS		= -lm
 
 # Directories
-SOURCES_DIR = ./src
-OBJECTS_DIR = ./.objects
-TARGETS_DIR = ./targets
+SOURCES_DIR		= ./src
+OBJECTS_DIR		= ./.objects
+TARGETS_DIR		= ./targets
 
 # Make directories
-MD		 = mkdir
-MDFLAGS	+= -p
+MD				= mkdir
+MDFLAGS			+= -p
 
 # Objects (.o)
-OBJS_CPU_INFO 			 	 = $(OBJECTS_DIR)/cpu_info.o
-OBJS_CPU_STRESS_THREADS		 = $(OBJECTS_DIR)/cpu_stress_threads.o
-OBJS_VECTOR_STAT_PROC   	 = $(OBJECTS_DIR)/vector_stat_proc.o
-OBJS_VECTOR_STAT_PROC   	+= $(OBJECTS_DIR)/vector_stat_proc-utils.o
-OBJS_VECTOR_STAT_SERVER 	 = $(OBJECTS_DIR)/vector_stat_server.o
-OBJS_VECTOR_STAT_SERVER		+= $(OBJECTS_DIR)/vector_stat_server-utils.o
-OBJS_EXERCISE7				 = $(OBJECTS_DIR)/exercise7.o
+OBJS_CPU_INFO				= $(OBJECTS_DIR)/cpu_info.o
+OBJS_CPU_STRESS_THREADS		= $(OBJECTS_DIR)/cpu_stress_threads.o
+OBJS_VECTOR_STAT_PROC		= $(OBJECTS_DIR)/vector_stat_proc.o
+OBJS_VECTOR_STAT_PROC		+= $(OBJECTS_DIR)/vector_stat_proc_utils.o
+OBJS_VECTOR_STAT_SERVER		= $(OBJECTS_DIR)/vector_stat_server.o
+OBJS_VECTOR_STAT_SERVER		+= $(OBJECTS_DIR)/vector_stat_server_utils.o
+OBJS_VECTOR_STAT_CLIENT		+= $(OBJECTS_DIR)/vector_stat_client.o
+OBJS_VECTOR_STAT_CLIENT		+= $(OBJECTS_DIR)/vector_stat_client_utils.o
+OBJS_EXERCISE7				= $(OBJECTS_DIR)/exercise7.o
 
 # Dependencies (.c)
-DEPS_CPU_INFO 				 = $(SOURCES_DIR)/cpu_info.c
-DEPS_CPU_STRESS_THREADS		 = $(SOURCES_DIR)/cpu_stress_threads.c
-DEPS_VECTOR_STAT_PROC   	 = $(SOURCES_DIR)/vector_stat_proc.c
-DEPS_VECTOR_STAT_PROC   	+= $(SOURCES_DIR)/vector_stat_proc-utils.c
-DEPS_VECTOR_STAT_SERVER 	 = $(SOURCES_DIR)/vector_stat_server.c
-DEPS_VECTOR_STAT_SERVER		+= $(SOURCES_DIR)/vector_stat_server-utils.c
-DEPS_EXERCISE7				 = $(SOURCES_DIR)/exercise7.c
+DEPS_CPU_INFO				= $(SOURCES_DIR)/cpu_info.c
+DEPS_CPU_STRESS_THREADS		= $(SOURCES_DIR)/cpu_stress_threads.c
+DEPS_VECTOR_STAT_PROC		= $(SOURCES_DIR)/vector_stat_proc.c
+DEPS_VECTOR_STAT_PROC		+= $(SOURCES_DIR)/vector_stat_proc_utils.c
+DEPS_VECTOR_STAT_SERVER		= $(SOURCES_DIR)/vector_stat_server.c
+DEPS_VECTOR_STAT_SERVER		+= $(SOURCES_DIR)/vector_stat_server_utils.c
+DEPS_VECTOR_STAT_CLIENT		+= $(SOURCES_DIR)/vector_stat_client.c
+DEPS_VECTOR_STAT_CLIENT		+= $(SOURCES_DIR)/vector_stat_client_utils.c
+DEPS_EXERCISE7				= $(SOURCES_DIR)/exercise7.c
 
 # Rules - DON'T CHANGE -------------------------------------{{{1
-all: createdir cpu_info cpu_stress_threads vector_stat_proc vector_stat_server exercise7
+all: createdir cpu_info cpu_stress_threads vector_stat_proc vector_stat_exer4 exercise7
 
 # cpu_info ------------------------------------------------ {{{2
 cpu_info : $(OBJS_CPU_INFO)
@@ -69,7 +73,15 @@ $(OBJECTS_DIR)/%.o : $(SOURCES_DIR)/%.c
 # --------------------------------------------------------- 2}}}
 
 # vector_stat_server -------------------------------------- {{{2
+vector_stat_exer4 : vector_stat_server vector_stat_client
+
 vector_stat_server : $(OBJS_VECTOR_STAT_SERVER)
+	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
+
+$(OBJECTS_DIR)/%.o : $(SOURCES_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@ 
+
+vector_stat_client : $(OBJS_VECTOR_STAT_CLIENT)
 	$(CC) $(CFLAGS) $^ -o $(TARGETS_DIR)/$@ $(EXTRAFLAGS)
 
 $(OBJECTS_DIR)/%.o : $(SOURCES_DIR)/%.c
